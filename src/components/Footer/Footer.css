@@ -1,0 +1,187 @@
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer {
+  width: 100%;
+  background: #050505;
+  color: #fff;
+  position: static;
+}
+
+/* =========================================
+   CONTENIDO
+========================================= */
+
+.footer-container {
+  min-height: 190px;
+  padding-top: 30px;
+  padding-bottom: 25px;
+
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.4fr .7fr;
+  gap: 30px;
+  align-items: start;
+}
+
+
+/* =========================================
+   MARCA
+========================================= */
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-brand h2 {
+  color: #fff;
+  font-family: 'Anton', sans-serif;
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.footer-brand span {
+  margin-top: 4px;
+  color: #f5c400;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+
+.footer-brand p {
+  max-width: 230px;
+  margin-top: 12px;
+  color: #888;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* =========================================
+   COLUMNAS
+========================================= */
+
+.footer-column,
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-column h3,
+.footer-contact h3 {
+  margin-bottom: 18px;
+  color: #f5c400;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+.footer-column a {
+  margin-bottom: 8px;
+  color: #999;
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.footer-column a:hover {
+  color: #f5c400;
+  transform: translateX(3px);
+}
+
+/* =========================================
+   CONTACTO
+========================================= */
+
+.footer-contact p {
+  margin-bottom: 8px;
+  color: #999;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+}
+
+/* =========================================
+   MAPA PERÚ
+========================================= */
+
+.footer-peru {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-peru img {
+  display: block;
+  width: 85px;
+  height: auto;
+  opacity: 0.9;
+}
+
+/* =========================================
+   FOOTER INFERIOR
+========================================= */
+
+.footer-bottom {
+  width: 100%;
+  border-top: 1px solid #222;
+}
+
+.footer-bottom-container {
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.footer-bottom p {
+  color: #555;
+  font-family: 'Raleway', sans-serif;
+  font-size: 9px;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1000px) {
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+
+  .footer-peru {
+    justify-content: flex-start;
+  }
+}
+
+/* =========================================
+   CELULAR
+========================================= */
+
+@media (max-width: 600px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding-top: 30px;
+    padding-bottom: 25px;
+  }
+
+  .footer-bottom-container {
+    min-height: 65px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .footer-peru {
+    justify-content: flex-start;
+  }
+}

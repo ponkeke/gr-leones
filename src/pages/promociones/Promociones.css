@@ -1,0 +1,16 @@
+.promociones {
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+  min-height: 100vh;
+  padding: 110px 20px 60px;
+
+  color: #fff;
+}
+
+.promociones-contenido {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
