@@ -1,16 +1,752 @@
-.promociones {
-  position: relative;
-  z-index: 1;
 
+/* =====================================================
+   BASE GENERAL
+===================================================== */
+
+.promociones {
+  --dorado: #f5c400;
+  --dorado-oscuro: #d9aa00;
+  --borde-sutil: rgba(255, 255, 255, 0.534);
+  
   width: 100%;
   min-height: 100vh;
-  padding: 110px 20px 60px;
-
-  color: #fff;
+  overflow: hidden;
+  color: #ffffff;
 }
 
-.promociones-contenido {
-  width: 100%;
-  max-width: 1400px;
+
+.promociones *,
+.promociones *::before,
+.promociones *::after {
+  box-sizing: border-box;
+}
+
+.promo-contenedor {
+  width: min(100% - 78px, 1240px);
   margin: 0 auto;
+}
+
+.logo-promo {
+  display: block;
+  width: min(100%, 620px);
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  margin: -10px 0px 18px;
+  
+}
+
+.promo-texto-dorado {
+  color: var(--dorado);
+}
+
+.promo-eyebrow {
+  display: inline-block;
+  margin-bottom: 9px;
+  color: var(--dorado);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.promo-linea-dorada {
+  display: block;
+  width: 78px;
+  height: 3px;
+  margin-top: 18px;
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    var(--dorado),
+    rgba(245, 196, 0, 0)
+  );
+}
+
+.promo-linea-centrada {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* =====================================================
+   BLOQUE 1: HERO
+===================================================== */
+
+.promo-hero-bloque {
+  position: relative;
+  min-height: 480px;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      10deg,
+      rgba(255, 170, 0, 0.832) 0%,
+      rgba(0, 0, 0, 0.086) 35%,
+    rgba(0, 0, 0, 0.036) 60%,
+      transparent 
+    ),
+    linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.778),
+      transparent 70%
+    );
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.promo-hero-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  
+}
+
+.promo-hero {
+  position: relative;
+  z-index: 2;
+  min-height: 480px;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 30px;
+}
+
+.promo-hero-texto {
+  position: relative;
+  z-index: 4;
+  max-width: 620px;
+  padding: 40px 0;
+}
+
+.promo-titulo {
+  margin: 0;
+  color: #ffffff;
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(38px, 4.4vw, 60px);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.promo-descripcion {
+  max-width: 520px;
+  margin: 22px 0 30px;
+  color: #e0e0e0;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* =====================================================
+   BENEFICIOS DEL HERO
+===================================================== */
+
+.promo-beneficios {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 20px 30px;
+}
+
+.promo-beneficio-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 150px;
+}
+
+.promo-beneficio-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(245, 196, 0, 0.4);
+  border-radius: 50%;
+  background: rgba(245, 196, 0, 0.07);
+  color: var(--dorado);
+}
+
+.promo-beneficio-titulo {
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* =====================================================
+   IMAGEN DEL HERO
+===================================================== */
+
+.promo-hero-visual {
+  position: relative;
+  min-height: 480px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.promo-hero-imagen {
+  position: absolute;
+  right: -40px;
+  bottom: -1px;
+  z-index: 2;
+  width: 560px;
+  height: 440px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.promo-hero-imagen img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000000 80%,
+    transparent 100%
+  );
+
+  mask-image: linear-gradient(
+    to bottom,
+    #000000 80%,
+    transparent 100%
+  );
+}
+
+/* =====================================================
+   BLOQUE 2: BUSCADOR Y FILTROS
+===================================================== */
+
+.promo-filtros-bloque {
+  position: relative;
+  z-index: 3;
+  padding: 30px 0;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(10, 10, 10, 0.96),
+      rgba(5, 5, 5, 0.98)
+    );
+  border-top: 1px solid rgba(245, 196, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.promo-filtros-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  border: 1px solid var(--borde-sutil);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.promo-filtro-campo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 190px;
+  min-width: 0;
+  padding: 11px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 30px;
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--dorado);
+  transition: border-color 0.25s ease;
+}
+
+.promo-filtro-campo:focus-within {
+  border-color: var(--dorado);
+}
+
+.promo-filtro-campo input,
+.promo-filtro-campo select {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #ffffff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+}
+
+.promo-filtro-campo select {
+  cursor: pointer;
+}
+
+.promo-filtro-campo select option {
+  background: #0c0c0c;
+  color: #ffffff;
+}
+
+.promo-filtro-campo input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.promo-filtro-busqueda {
+  flex: 2 1 240px;
+}
+
+.promo-filtro-boton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  padding: 12px 26px;
+  border: 1px solid var(--dorado);
+  border-radius: 30px;
+  outline: none;
+  background: var(--dorado);
+  color: #000000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.promo-filtro-boton:hover {
+  background: var(--dorado-oscuro);
+  transform: translateY(-2px);
+}
+
+/* =====================================================
+   BLOQUE 3: NUESTRAS PROMOCIONES
+===================================================== */
+
+.promo-listado-bloque {
+  position: relative;
+  padding: 85px 0 95px;
+  background:
+    linear-gradient(
+      to bottom,
+      #080808 0%,
+      #111111 50%,
+      #080808 100%
+    );
+}
+
+.promo-listado-seccion {
+  width: 100%;
+}
+
+.promo-seccion-encabezado {
+  max-width: 650px;
+  margin: 0 auto 45px;
+  text-align: center;
+}
+
+.promo-seccion-titulo {
+  margin: 5px 0 0;
+  color: #ffffff;
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(30px, 3.3vw, 45px);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.promo-seccion-descripcion {
+  max-width: 470px;
+  margin: 18px auto 0;
+  color: #bdbdbd;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* =====================================================
+   GRID DE CONTENIDO (PROYECTOS + TARJETA LATERAL)
+===================================================== */
+
+.promo-contenido-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.promo-proyectos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 20px;
+}
+
+.promo-sin-resultados {
+  grid-column: 1 / -1;
+  padding: 30px 10px;
+  color: #bdbdbd;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* =====================================================
+   TARJETA DE PROYECTO
+===================================================== */
+
+.promo-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--borde-sutil);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.035);
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease;
+}
+
+.promo-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(245, 196, 0, 0.5);
+  background: rgba(245, 196, 0, 0.05);
+}
+
+.promo-card-imagen {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.promo-card-imagen img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.promo-imagen-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--dorado);
+}
+
+.promo-card-estado {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 6px 14px;
+  border-radius: 30px;
+  background: var(--dorado);
+  color: #000000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.promo-card-contenido {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 20px 22px 22px;
+}
+
+.promo-card-nombre {
+  margin: 0 0 10px;
+  color: #ffffff;
+  font-family: 'Raleway', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.promo-card-dato {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  color: #bdbdbd;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+}
+
+.promo-card-dato svg {
+  flex-shrink: 0;
+  color: var(--dorado);
+}
+
+.promo-card-pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.promo-card-precio {
+  color: var(--dorado);
+  font-family: 'Raleway', sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.promo-card-boton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border: 1px solid var(--dorado);
+  border-radius: 30px;
+  color: var(--dorado);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.promo-card-boton:hover {
+  background: var(--dorado);
+  color: #000000;
+}
+
+/* =====================================================
+   TARJETA LATERAL
+===================================================== */
+
+.promo-lateral-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(245, 196, 0, 0.35);
+  border-radius: 16px;
+  background: rgba(245, 196, 0, 0.05);
+}
+
+.promo-lateral-imagen {
+  width: 100%;
+  height: 190px;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.promo-lateral-imagen img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.promo-lateral-contenido {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 24px 24px 28px;
+}
+
+.promo-lateral-titulo {
+  margin: 14px 0 0;
+  color: #ffffff;
+  font-family: 'Anton', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.promo-lateral-texto {
+  margin: 14px 0 0;
+  color: #bdbdbd;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.promo-lateral-boton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: auto;
+  padding: 13px 20px;
+  border: 1px solid var(--dorado);
+  border-radius: 30px;
+  background: var(--dorado);
+  color: #000000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-decoration: none;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+.promo-lateral-boton:hover {
+  background: var(--dorado-oscuro);
+  transform: translateY(-2px);
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1024px) {
+  .promo-contenedor {
+    width: min(100% - 45px, 1100px);
+  }
+
+  .promo-hero-bloque {
+    min-height: auto;
+  }
+
+  .promo-hero {
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+
+  .promo-hero-texto {
+    padding: 40px 0 10px;
+  }
+
+  .promo-titulo {
+    font-size: clamp(34px, 5vw, 52px);
+  }
+
+  .promo-hero-visual {
+    min-height: 300px;
+  }
+
+  .promo-hero-imagen {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    max-width: 420px;
+    height: 300px;
+    margin: 0 auto;
+  }
+
+  .promo-contenido-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .promo-proyectos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* =====================================================
+   MÓVIL
+===================================================== */
+
+@media (max-width: 650px) {
+  .promo-contenedor {
+    width: min(100% - 30px, 500px);
+  }
+
+  .promo-hero-texto {
+    padding: 30px 0 10px;
+  }
+
+  .promo-descripcion {
+    max-width: 100%;
+    font-size: 12px;
+  }
+
+  .promo-beneficios {
+    gap: 14px 20px;
+  }
+
+  .promo-beneficio-item {
+    min-width: 130px;
+  }
+
+  .promo-hero-visual {
+    min-height: 220px;
+  }
+
+  .promo-hero-imagen {
+    max-width: 260px;
+    height: 220px;
+  }
+
+  .promo-filtros-panel {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+  }
+
+  .promo-filtro-campo,
+  .promo-filtro-busqueda {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .promo-filtro-boton {
+    width: 100%;
+  }
+
+  .promo-listado-bloque {
+    padding: 60px 0 65px;
+  }
+
+  .promo-seccion-encabezado {
+    text-align: left;
+    margin-bottom: 30px;
+  }
+
+  .promo-linea-centrada {
+    margin-left: 0;
+  }
+
+  .promo-seccion-descripcion {
+    margin-left: 0;
+  }
+
+  .promo-proyectos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .promo-card-imagen {
+    height: 170px;
+  }
+
+  .promo-card-pie {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .promo-card-boton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .promo-lateral-titulo {
+    font-size: 21px;
+  }
 }

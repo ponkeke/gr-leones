@@ -37,16 +37,16 @@ function Hero() {
 
           <div className="hero-buttons">
 
-            <button className="primary-button">
+            <button className="primary-button" onClick={() => { window.location.href = '/proyectospage' }}>
               Ver proyectos <span>→</span>
             </button>
 
-            <button className="secondary-button">
+            <button className="secondary-button" onClick={() => { window.location.href = '/nosotros' }}>
               Conoce más <span>→</span>
             </button>
 
           </div>
-//
+
           <div className="hero-features">
 
             <div className="feature">

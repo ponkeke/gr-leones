@@ -1,0 +1,143 @@
+.detalle-proyecto {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 100vh;
+  padding: 110px 20px 60px;
+}
+
+.detalle-proyecto-estado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 120px 20px;
+  color: #eee;
+  font-family: 'Raleway', sans-serif;
+  text-align: center;
+}
+
+.detalle-proyecto-contenido {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 28px;
+  padding: 18px;
+  border: 1px solid rgba(255, 222, 8, 0.16);
+  border-radius: 18px;
+  background: rgba(31, 31, 30, 0.76);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.22);
+}
+
+.detalle-proyecto-imagen {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #222;
+  min-height: 320px;
+}
+
+.detalle-proyecto-imagen img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detalle-proyecto-info {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 6px;
+}
+
+.detalle-proyecto-ubicacion {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #f5c400;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.detalle-proyecto-info h1 {
+  color: #edeee4;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+.detalle-proyecto-descripcion {
+  color: #a8a8a8;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.detalle-proyecto-datos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid #323131;
+  border-bottom: 1px solid #323131;
+  margin-bottom: 22px;
+}
+
+.detalle-proyecto-datos > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detalle-proyecto-datos small {
+  display: block;
+  color: #8f8f8f;
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+}
+
+.detalle-proyecto-datos strong {
+  color: #eee;
+  font-family: 'Raleway', sans-serif;
+  font-size: 15px;
+}
+
+.detalle-proyecto-acciones {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: auto;
+}
+
+.detalle-proyecto-acciones .btn-proyecto {
+  padding: 13px 22px;
+  font-size: 13px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .detalle-proyecto-contenido {
+    grid-template-columns: 1fr;
+  }
+
+  .detalle-proyecto-imagen {
+    min-height: 240px;
+  }
+}
+
+@media (max-width: 600px) {
+  .detalle-proyecto {
+    padding: 95px 15px 40px;
+  }
+
+  .detalle-proyecto-datos {
+    grid-template-columns: 1fr;
+  }
+}

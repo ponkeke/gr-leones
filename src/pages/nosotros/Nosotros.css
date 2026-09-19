@@ -1,11 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Dancing+Script:wght@600;700&family=DM+Sans:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&family=Raleway:wght@400;500;600;700;800&display=swap');
 
 /* =====================================================
    BASE GENERAL
 ===================================================== */
 
 .nosotros {
-  --dorado: #f5c400;
   --dorado-oscuro: #d9aa00;
   --borde-sutil: rgba(255, 255, 255, 0.14);
 
@@ -71,11 +69,16 @@
   overflow: hidden;
   background:
     linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.86) 0%,
-      rgba(0, 0, 0, 0.56) 42%,
-      rgba(0, 0, 0, 0.22) 72%,
-      rgba(0, 0, 0, 0.62) 100%
+      10deg,
+      rgba(255, 170, 0, 0.832) 0%,
+      rgba(0, 0, 0, 0.086) 35%,
+    rgba(0, 0, 0, 0.036) 60%,
+      transparent 
+    ),
+    linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.778),
+      transparent 70%
     );
 
   background-size: cover;
@@ -119,15 +122,13 @@
   padding: 35px 0;
 }
 
-.nosotros-titulo {
-  margin: 0;
-  color: #ffffff;
-  font-family: 'Anton', sans-serif;
-  font-size: clamp(42px, 5vw, 70px);
-  font-weight: 400;
-  letter-spacing: 0.5px;
-  line-height: 0.98;
-  text-transform: uppercase;
+.logo-nosotros{
+  display: block;
+  width: min(100%, 620px);
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  margin: -10px 0px 18px;
 }
 
 .nosotros-descripcion {
@@ -268,13 +269,9 @@
   position: relative;
   z-index: 3;
   min-height: 560px;
-  padding: 75px 0 80px;
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(10, 10, 10, 0.96),
-      rgba(5, 5, 5, 0.98)
-    );
+  padding: 50px 0 9%;
+  background: rgba(0, 0, 0, 0.968);
+  backdrop-filter: blur(9px);
   border-top: 1px solid rgba(245, 196, 0, 0.2);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -335,7 +332,7 @@
   background: transparent;
   color: #ffffff;
   font-family: 'Montserrat', sans-serif;
-  font-size: 10px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition:
@@ -352,7 +349,7 @@
 .filtro-btn.filtro-activo {
   border-color: var(--dorado);
   background: var(--dorado);
-  color: #000000;
+  color: #dabc12;
 }
 
 /* =====================================================
@@ -412,9 +409,8 @@
   position: relative;
   overflow: hidden;
   width: 100%;
-  border: 1px solid var(--dorado);
-  border-radius: 20px;
-  background: #171717;
+
+  background: transparent;
 }
 
 .equipo-card-centro .equipo-avatar {
@@ -422,7 +418,7 @@
   margin-bottom: 20px;
   border-width: 2px;
   border-radius: 24px;
-  box-shadow: 0 22px 45px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 22px 45px rgba(255, 174, 0, 0.595);
 }
 
 .equipo-card-lateral .equipo-avatar {
@@ -446,7 +442,7 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  background: linear-gradient(150deg, #1c1c1c, #0a0a0a);
+  background: transparent;
   color: var(--dorado);
 }
 
@@ -560,8 +556,9 @@
   height: 45px;
   border: 1px solid var(--dorado);
   border-radius: 50%;
+  border: 1px solid;
   outline: none;
-  background: #050505;
+  background: transparent;
   color: var(--dorado);
   cursor: pointer;
   transition:
@@ -572,7 +569,7 @@
 
 .equipo-flecha:hover {
   background: var(--dorado);
-  color: #000000;
+  color: #e4a70d;
   transform: translateY(-2px);
 }
 
@@ -583,6 +580,440 @@
 }
 
 /* =====================================================
+   ESCENARIO: CARRUSEL + PANEL DE INFORMACIÓN
+
+   .equipo-escenario agrupa el carrusel existente y UN solo panel
+   (.equipo-panel) que muestra los datos del integrante activo.
+
+   - Escritorio (>= 1100px): el carrusel queda a la izquierda y el panel
+     a la derecha. El panel aparece con hover sobre cualquier tarjeta
+     visible; las tarjetas no se mueven ni se deforman.
+   - Menos de 1100px: el panel se abre debajo del carrusel con
+     toque/clic y se cierra con la X.
+===================================================== */
+
+.equipo-escenario {
+  position: relative;
+  width: 100%;
+}
+
+/* ---------- Tarjeta señalada / tarjetas de fondo ---------- */
+
+.equipo-avatar {
+  transition: box-shadow 0.45s ease;
+}
+
+.equipo-card-seleccionada .equipo-avatar {
+  box-shadow:
+    0 0 0 1px rgba(245, 196, 0, 0.75),
+    0 0 32px rgba(245, 196, 0, 0.4),
+    0 18px 40px rgba(255, 174, 0, 0.35);
+}
+
+.equipo-card-apagada {
+  opacity: 0.45;
+  filter: grayscale(0.4) brightness(0.7);
+}
+
+/* Solo con mouse: pista visual de que las laterales son interactivas */
+@media (hover: hover) {
+  .equipo-card-lateral:hover {
+    opacity: 0.95;
+    filter: none;
+  }
+}
+
+/* ---------- Zona del panel (por defecto: debajo del carrusel) ---------- */
+
+.equipo-panel-zona {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.equipo-panel-zona-abierta {
+  grid-template-rows: 1fr;
+}
+
+.equipo-panel-recorte {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ---------- Panel ---------- */
+
+.equipo-panel {
+  position: relative;
+  max-width: 720px;
+  margin: 18px auto 0;
+  padding: 24px 26px;
+  border: 1px solid rgba(245, 196, 0, 0.5);
+  border-radius: 26px;
+  background: linear-gradient(150deg, #241e0e 0%, #0c0c0c 55%);
+  box-shadow:
+    0 0 0 1px rgba(245, 196, 0, 0.08),
+    0 0 34px rgba(245, 196, 0, 0.2),
+    0 22px 46px rgba(0, 0, 0, 0.55);
+  text-align: left;
+  cursor: default;
+
+  /* Cerrado: invisible y sin capturar el mouse */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(14px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0.4s;
+}
+
+.equipo-panel-abierto {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s;
+}
+
+/* Al cambiar de integrante el contenido se remonta (key) y entra con fundido */
+.equipo-panel-cuerpo {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: center;
+  gap: 28px;
+  animation: equipoPanelEntra 0.35s ease both;
+}
+
+@keyframes equipoPanelEntra {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Sin detalles cargados solo hay perfil: una columna compacta */
+.equipo-panel-simple {
+  max-width: 340px;
+}
+
+.equipo-panel-simple .equipo-panel-cuerpo {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* ---------- Perfil (izquierda): foto, nombre, cargo, frase ---------- */
+
+.equipo-panel-perfil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.equipo-panel-foto {
+  width: 100%;
+  aspect-ratio: 1 / 1.05;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #000000;
+  box-shadow:
+    0 0 0 1px rgba(245, 196, 0, 0.6),
+    0 0 28px rgba(245, 196, 0, 0.28);
+}
+
+.equipo-panel-foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.equipo-panel-nombre {
+  margin: 16px 0 0;
+  color: #ffffff;
+  font-family: 'Raleway', sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.equipo-panel-cargo {
+  margin: 6px 0 0;
+  color: #f5c400;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.linea-equipo-panel {
+  width: 44px;
+  height: 2px;
+  margin: 14px auto 10px;
+}
+
+.equipo-panel-frase {
+  max-width: 260px;
+  margin: 0;
+  color: #bdbdbd;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12.5px;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ---------- Información (derecha) ---------- */
+
+.equipo-panel-info {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+.equipo-panel-lista {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.equipo-panel-fila {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 9px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.equipo-panel-fila:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.equipo-panel-icono,
+.equipo-red {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(245, 196, 0, 0.55);
+  border-radius: 50%;
+  color: #f5c400;
+}
+
+.equipo-panel-icono {
+  width: 32px;
+  height: 32px;
+}
+
+.equipo-panel-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.equipo-panel-etiqueta {
+  color: #f5c400;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.equipo-panel-valor {
+  color: #e6e6e6;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.equipo-panel-acciones {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.equipo-red {
+  width: 34px;
+  height: 34px;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.equipo-red:hover {
+  background: #f5c400;
+  color: #111111;
+  transform: translateY(-2px);
+}
+
+.equipo-contactame {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  padding: 9px 20px;
+  border-radius: 30px;
+  background: #f5c400;
+  color: #111111;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.equipo-contactame:hover {
+  box-shadow: 0 8px 22px rgba(245, 196, 0, 0.35);
+  transform: translateY(-2px);
+}
+
+.equipo-panel-cerrar {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid rgba(245, 196, 0, 0.5);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  color: #f5c400;
+  cursor: pointer;
+}
+
+/* Con el botón cerrar visible se reserva su espacio sobre la información */
+.equipo-panel-cerrar ~ .equipo-panel-cuerpo .equipo-panel-info {
+  padding-top: 22px;
+}
+
+/* ---------- Escritorio: carrusel a la izquierda, panel a la derecha ---------- */
+
+@media (min-width: 1100px) {
+  .equipo-escenario {
+    display: grid;
+    grid-template-columns: minmax(0, 50%) minmax(0, 1fr);
+    column-gap: 28px;
+    align-items: center;
+  }
+
+  /* Las laterales se acercan al centro para caber en la mitad izquierda */
+  .offset-neg-1 {
+    transform: translate(-50%, -50%) translateX(-175px) rotateY(20deg) scale(0.82);
+  }
+
+  .offset-pos-1 {
+    transform: translate(-50%, -50%) translateX(175px) rotateY(-20deg) scale(0.82);
+  }
+
+  .equipo-panel-zona {
+    position: relative;
+    display: block;
+    align-self: stretch;
+  }
+
+  .equipo-panel-recorte {
+    display: contents;
+  }
+
+  /* El panel flota sobre la zona: aparecer no cambia la altura de la sección */
+  .equipo-panel {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    max-width: none;
+    max-height: 100%;
+    margin: 0 auto;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(245, 196, 0, 0.5) transparent;
+    transform: translate(24px, -50%);
+  }
+
+  .equipo-panel-abierto {
+    transform: translate(0, -50%);
+  }
+
+  .equipo-panel-simple {
+    max-width: 340px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .equipo-escenario {
+    grid-template-columns: minmax(0, 47%) minmax(0, 1fr);
+  }
+
+  .offset-neg-1 {
+    transform: translate(-50%, -50%) translateX(-190px) rotateY(20deg) scale(0.82);
+  }
+
+  .offset-pos-1 {
+    transform: translate(-50%, -50%) translateX(190px) rotateY(-20deg) scale(0.82);
+  }
+}
+
+/* ---------- Móvil ---------- */
+
+@media (max-width: 650px) {
+  .equipo-panel {
+    padding: 20px 18px;
+  }
+
+  .equipo-panel-cuerpo {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .equipo-panel-foto {
+    max-width: 230px;
+    margin: 0 auto;
+  }
+
+  .equipo-panel-nombre {
+    font-size: 19px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .equipo-panel,
+  .equipo-panel-zona,
+  .equipo-avatar {
+    transition-duration: 0.01s !important;
+    transition-delay: 0s !important;
+  }
+
+  .equipo-panel-cuerpo {
+    animation: none;
+  }
+}
+
+/* =====================================================
    BLOQUE MISIÓN, VISIÓN Y VALORES
 ===================================================== */
 
@@ -590,13 +1021,7 @@
   position: relative;
   min-height: 500px;
   padding: 85px 0 95px;
-  background:
-    linear-gradient(
-      to bottom,
-      #080808 0%,
-      #111111 50%,
-      #080808 100%
-    );
+  background-color: #00000081;
 }
 
 .pilares-seccion {
@@ -615,36 +1040,25 @@
   gap: 22px;
   margin-bottom: 42px;
 }
-
 .pilar-card {
   min-height: 235px;
   padding: 30px 27px;
   border: 1px solid var(--borde-sutil);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.035);
+  background: rgba(0, 0, 0, 0.65);
+  color: #ffffff;
   transition:
     transform 0.3s ease,
     border-color 0.3s ease,
-    background 0.3s ease;
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
 .pilar-card:hover {
   transform: translateY(-6px);
-  border-color: rgba(245, 196, 0, 0.5);
-  background: rgba(245, 196, 0, 0.05);
-}
-
-.pilar-icono {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 55px;
-  height: 55px;
-  margin-bottom: 18px;
-  border: 1px solid rgba(245, 196, 0, 0.4);
-  border-radius: 50%;
-  background: rgba(245, 196, 0, 0.07);
-  color: var(--dorado);
+  border-color: rgba(245, 196, 0, 0.8);
+  background: rgba(245, 196, 0, 0.92);
+  color: #000000;
 }
 
 .pilar-titulo {
@@ -653,6 +1067,7 @@
   font-family: 'Raleway', sans-serif;
   font-size: 21px;
   font-weight: 700;
+  transition: color 0.3s ease;
 }
 
 .pilar-descripcion {
@@ -661,6 +1076,13 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
   line-height: 1.7;
+  transition: color 0.3s ease;
+}
+
+/* Cambiar las letras al pasar el mouse */
+.pilar-card:hover .pilar-titulo,
+.pilar-card:hover .pilar-descripcion {
+  color: #000000;
 }
 
 /* =====================================================

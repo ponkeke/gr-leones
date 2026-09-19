@@ -3,18 +3,36 @@ import Navbar from './components/Navbar/Navbar'
 import Hero from './components/Hero/Hero'
 import Footer from './components/Footer/Footer'
 import ProyectosPage from './pages/proyectos/Proyectospage'
+import Lotes from './pages/lotes/Lotes'
 import Comunicados from './pages/comunicados/comunicados'
 import Nosotros from './pages/nosotros/Nosotros'
 import Promociones from './pages/promociones/Promociones'
+import DetalleProyecto from './pages/detalleProyecto/DetalleProyecto'
+import Login from './pages/login/Login'
+import SimuladorCostos from './pages/simuladorCostos/SimuladorCostos'
+import NoEncontrada from './pages/noEncontrada/NoEncontrada'
+import { normalizarRuta } from './utils/rutas'
+
+// Rutas conocidas: cada una con la clase que aísla los estilos de su página.
+// "/inicio" es un alias de "/". Cualquier otra ruta muestra la vista 404.
+const RUTAS = {
+  '/': { clase: 'pagina-inicio', Pagina: Hero },
+  '/inicio': { clase: 'pagina-inicio', Pagina: Hero },
+  '/proyectospage': { clase: 'pagina-proyectos', Pagina: ProyectosPage },
+  '/lotes': { clase: 'pagina-lotes', Pagina: Lotes },
+  '/comunicados': { clase: 'pagina-comunicados', Pagina: Comunicados },
+  '/nosotros': { clase: 'pagina-nosotros', Pagina: Nosotros },
+  '/promociones': { clase: 'pagina-promociones', Pagina: Promociones },
+  '/detalle-proyecto': { clase: 'pagina-detalle-proyecto', Pagina: DetalleProyecto },
+  '/login': { clase: 'pagina-login', Pagina: Login },
+  '/simulador-costos': { clase: 'pagina-simulador', Pagina: SimuladorCostos },
+}
 
 function App() {
-  const ruta = window.location.pathname
-
-  const esProyectos = ruta === '/proyectospage'
-  const esComunicados = ruta === '/comunicados'
-  const esNosotros = ruta === '/nosotros'
-  const esPromociones = ruta === '/promociones'
-  const esOtraPagina = esProyectos || esComunicados || esNosotros || esPromociones
+  const ruta = normalizarRuta(window.location.pathname)
+  const rutaConocida = Object.hasOwn(RUTAS, ruta)
+  const Pagina = rutaConocida ? RUTAS[ruta].Pagina : NoEncontrada
+  const claseDePagina = rutaConocida ? RUTAS[ruta].clase : 'pagina-no-encontrada'
 
   // Permite enlaces tipo "/inicio#contacto": al montar, si hay hash,
   // baja suavemente hasta ese elemento (el Footer, con id="contacto",
@@ -30,20 +48,16 @@ function App() {
   }, [])
 
   return (
-    <div
-      className={`page ${esProyectos ? 'pagina-proyectos' : ''}`}
-    >
+    <div className={`page ${claseDePagina}`}>
       <Navbar />
 
       <main>
-        {esProyectos && <ProyectosPage />}
-        {esComunicados && <Comunicados />}
-        {esNosotros && <Nosotros />}
-        {esPromociones && <Promociones />}
-        {!esOtraPagina && <Hero />}
+        <Pagina />
       </main>
 
       <Footer />
+
+     
     </div>
   )
 }

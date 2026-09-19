@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&family=Raleway:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Dancing+Script:wght@600;700&family=DM+Sans:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&family=Raleway:wght@400;500;600;700;800;900&display=swap');
 
 * {
   margin: 0;
@@ -16,12 +16,27 @@ body {
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
-  background: #000;
+
+  background: linear-gradient(
+90deg,
+rgba(0, 0, 0, 0.95) 0%,
+rgba(0, 0, 0, 0.596) 40%,
+rgba(94, 105, 12, 0.277) 60%,
+rgba(135, 119, 70, 0.434) 100%
+),
+    url('/fondo.png');
+
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: #000000;
 }
 
 #root {
   width: 100%;
   min-height: 100vh;
+  background: transparent;
 }
 
 /* Página general */
@@ -30,44 +45,25 @@ body {
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
-  background: #000;
-}
-
-/* Fondo fijo para toda la pantalla */
-.page::before {
-  content: '';
-
-  position: fixed;
-  inset: 0;
-
-  width: 100%;
-  height: 100vh;
-
-  background-image:
-    linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.90) 0%,
-      rgba(0, 0, 0, 0.65) 25%,
-      rgba(0, 0, 0, 0.35) 50%,
-      rgba(0, 0, 0, 0.12) 75%,
-      rgba(0, 0, 0, 0.05) 100%
-    ),
-    url('/fondo.png');
-
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-
-  z-index: 0;
-  pointer-events: none;
+  background: transparent;
 }
 
 /* Contenido encima del fondo */
 .page > * {
   position: relative;
-  
+
 }
 
+/* Asegurar que las páginas no tapen el fondo */
+main,
+.pagina-inicio,
+.pagina-proyectos,
+.pagina-lotes,
+.pagina-comunicados,
+.pagina-nosotros,
+.pagina-promociones {
+  background: transparent;
+}
 
 /* Contenedor general */
 .container {

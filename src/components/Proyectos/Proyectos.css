@@ -8,7 +8,9 @@
   min-height: 520px;
   padding: 45px 0;
   overflow: hidden;
+  
 }
+
 
 /* =========================================
    CONTENEDOR FLOTANTE
@@ -26,7 +28,7 @@
   border-radius: 28px;
 
   background: rgba(0, 0, 0, 0.904);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 /* =========================================
@@ -43,7 +45,7 @@
 
 .proyectos-title {
   display: block;
-  background-color: #f5c40000;
+  
   width: 100%;
   max-width: 600px;
   height: auto;
@@ -54,7 +56,6 @@
 .proyectos-description {
   display: block;
   margin-top: -50px;
-  background-color: #f5c40000;
   color: #f8f8f8;
   font-family: 'Raleway', sans-serif;
   font-size: 15px;
@@ -70,7 +71,6 @@
 
   width: 270px;
   z-index: -1;
-  background-color: #69560b00;
 }
 
 .proyectos-leon img {
@@ -109,12 +109,62 @@
 
 .proyectos-list {
   min-height: 230px;
-  padding: 20px;
+  padding: 10px;
 
   border: 1px solid #f5c400;
   border-radius: 20px;
 
   background: rgba(0, 0, 0, 0.35);
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.proyecto-destacado-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 10px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  text-decoration: none;
+
+  font-family: 'Raleway', sans-serif;
+  transition: background 0.2s ease;
+}
+
+.proyecto-destacado-item:last-child {
+  border-bottom: none;
+}
+
+.proyecto-destacado-item:hover {
+  background: rgba(245, 196, 0, 0.1);
+}
+
+.proyecto-destacado-nombre {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.proyecto-destacado-ubicacion {
+  color: #aaa;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.proyecto-destacado-precio {
+  color: #f5c400;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 /* =========================================

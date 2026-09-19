@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import './comunicados.css'
 import terreno1 from '../../assets/images/terreno1.png'
 import novedades from '../../assets/images/novedades-titulo.png'
@@ -6,6 +7,8 @@ import leonbusc from '../../assets/images/leon-buscando.png'
 
 import { MapPin } from 'lucide-react'
 
+// PENDIENTE: los comunicados todavía no tienen contenido completo ni página propia. Cuando
+// existan, agregar a cada objeto un campo `enlace` (ruta o URL): "Leer más" lo abrirá solo.
 const comunicados = [
   {
     categoria: 'Novedad',
@@ -57,7 +60,60 @@ const comunicados = [
   },
 ]
 
+// Cada botón de filtro y la categoría que muestra (`null` = todas).
+const FILTROS = [
+  { etiqueta: 'Todos', categoria: null },
+  { etiqueta: 'Novedades', categoria: 'Novedad' },
+  { etiqueta: 'Eventos', categoria: 'Evento' },
+  { etiqueta: 'Avances de obra', categoria: 'Avance de obra' },
+  { etiqueta: 'Consejos', categoria: 'Consejos' },
+  { etiqueta: 'Importante', categoria: 'Importante' },
+]
+
+const MESES = { ENE: 0, FEB: 1, MAR: 2, ABR: 3, MAY: 4, JUN: 5, JUL: 6, AGO: 7, SEP: 8, OCT: 9, NOV: 10, DIC: 11 }
+
+// "07 SEP 2026" -> marca de tiempo, para poder ordenar por fecha.
+function fechaComoNumero(texto) {
+  const [dia, mes, anio] = texto.split(' ')
+  return new Date(Number(anio), MESES[mes] ?? 0, Number(dia)).getTime()
+}
+
+// Para buscar sin distinguir mayúsculas ni tildes.
+function normalizar(texto) {
+  return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+}
+
+// PENDIENTE: ruta o URL de la página/calendario de próximos eventos (aún no existe).
+// Al asignarla, "Ver calendario" navegará allí.
+const URL_CALENDARIO = null
+
 function Comunicados() {
+  const [filtroActivo, setFiltroActivo] = useState(FILTROS[0].etiqueta)
+  const [busqueda, setBusqueda] = useState('')
+  const [masRecientesPrimero, setMasRecientesPrimero] = useState(true)
+
+  const categoriaActiva = FILTROS.find((filtro) => filtro.etiqueta === filtroActivo).categoria
+  const texto = normalizar(busqueda.trim())
+
+  const comunicadosVisibles = comunicados
+    .filter((comunicado) => !categoriaActiva || comunicado.categoria === categoriaActiva)
+    .filter(
+      (comunicado) =>
+        !texto || normalizar(`${comunicado.titulo} ${comunicado.descripcion}`).includes(texto),
+    )
+    .sort((a, b) => {
+      const diferencia = fechaComoNumero(b.fecha) - fechaComoNumero(a.fecha)
+      return masRecientesPrimero ? diferencia : -diferencia
+    })
+
+  const leerMas = (comunicado) => {
+    if (comunicado.enlace) window.location.assign(comunicado.enlace)
+  }
+
+  const verCalendario = () => {
+    if (URL_CALENDARIO) window.location.assign(URL_CALENDARIO)
+  }
+
   return (
     <section className="comunicados">
       {/* ENCABEZADO PRINCIPAL */}
@@ -92,12 +148,16 @@ function Comunicados() {
       <div className="comunicados-filtros-container">
         <div className="container comunicados-filtros">
           <div className="filtros-categorias">
-            <button className="filtro-activo">Todos</button>
-            <button>Novedades</button>
-            <button>Eventos</button>
-            <button>Avances de obra</button>
-            <button>Consejos</button>
-            <button>Importante</button>
+            {FILTROS.map((filtro) => (
+              <button
+                key={filtro.etiqueta}
+                type="button"
+                className={filtroActivo === filtro.etiqueta ? 'filtro-activo' : undefined}
+                onClick={() => setFiltroActivo(filtro.etiqueta)}
+              >
+                {filtro.etiqueta}
+              </button>
+            ))}
           </div>
 
           <div className="comunicados-buscador">
@@ -106,6 +166,8 @@ function Comunicados() {
             <input
               type="text"
               placeholder="Buscar comunicado..."
+              value={busqueda}
+              onChange={(evento) => setBusqueda(evento.target.value)}
             />
           </div>
         </div>
@@ -117,17 +179,21 @@ function Comunicados() {
           <div className="comunicados-listado-cabecera">
             <h2>Últimos comunicados</h2>
 
-            <button className="ordenar-button">
+            <button
+              className="ordenar-button"
+              type="button"
+              onClick={() => setMasRecientesPrimero((valor) => !valor)}
+            >
               ☷ &nbsp; Ordenar por:
-              <span>Más recientes⌄</span>
+              <span>{masRecientesPrimero ? 'Más recientes' : 'Más antiguos'}⌄</span>
             </button>
           </div>
 
           <div className="comunicados-grid">
-            {comunicados.map((comunicado, index) => (
+            {comunicadosVisibles.map((comunicado) => (
               <article
                 className="comunicado-card"
-                key={index}
+                key={`${comunicado.fecha}-${comunicado.titulo}`}
               >
                 <div className="comunicado-imagen">
                   <img
@@ -139,6 +205,8 @@ function Comunicados() {
                     {comunicado.categoria}
                   </span>
 
+                  {/* PENDIENTE: guardar favoritos requiere definir dónde se guardan (cuenta de
+                      usuario o dispositivo) y dónde se consultan; aún no está definido. */}
                   <button
                     className="comunicado-favorito"
                     type="button"
@@ -160,6 +228,7 @@ function Comunicados() {
                   <button
                     className="comunicado-leer"
                     type="button"
+                    onClick={() => leerMas(comunicado)}
                   >
                     Leer más →
                   </button>
@@ -167,6 +236,10 @@ function Comunicados() {
               </article>
             ))}
           </div>
+
+          {comunicadosVisibles.length === 0 && (
+            <p className="lotes-subtitulo">No hay comunicados que coincidan con tu búsqueda.</p>
+          )}
         </div>
       </div>
 
@@ -183,7 +256,7 @@ function Comunicados() {
             <p>Conoce ferias, lanzamientos y más.</p>
           </div>
 
-          <button className="banner-button" type="button">
+          <button className="banner-button" type="button" onClick={verCalendario}>
             Ver calendario →
           </button>
 

@@ -8,16 +8,19 @@
   left: 0;
   width: 100%;
   z-index: 1000;
+
+  /* Fondo negro elegante en todas las páginas */
+  background: transparent;
 }
 /*Proyectos*/
-/* Navbar negro solamente en la página de proyectos */
+/* Degradado especial (más intenso) solamente en la página de proyectos */
 .pagina-proyectos .navbar {
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.823) 0%,
     rgba(0, 0, 0, 0.75) 35%,
-    rgba(0, 0, 0, 0.35) 80%,
-    rgba(223, 223, 40, 0.086) 100%
+    rgba(6, 6, 6, 0.35) 80%,
+    rgba(0, 0, 0, 0.001) 100%
   );
 }
 
@@ -44,7 +47,7 @@
 .navbar-container {
   position: relative;
   z-index: 10000;
-
+  background-color: transparent;
   width: 100%;
   min-height: 70px;
 
@@ -132,7 +135,7 @@
 ========================================= */
 
 .nav-proyectos {
-  position: relative;
+  position: static;
   display: flex;
   align-items: center;
 }
@@ -148,9 +151,6 @@
 /* =========================================
    PANEL FLOTANTE
 ========================================= */
-.nav-proyectos {
-  position: static;
-}
 
 .proyectos-flotante {
   position: fixed;
@@ -163,101 +163,10 @@
   overflow-y: auto;
   max-height: 600px;
   background: transparent;
-  
+
   z-index: 1;
- 
+
 }
-/* =========================================
-   CABECERA DEL PANEL
-========================================= */
-
-.proyectos-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 20px;
-  margin-bottom: 25px;
-}
-
-.proyectos-header h2 {
-  margin: 0;
-
-  color: #e51b23;
-
-  font-family: 'Anton', sans-serif;
-  font-size: 28px;
-  font-weight: 400;
-  line-height: 1.1;
-}
-
-.ver-todos {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-
-  flex-shrink: 0;
-
-  padding: 15px 25px;
-
-  border: none;
-  border-radius: 30px;
-
-  background: #f4f4f6;
-  color: #000;
-
-  font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-
-  cursor: pointer;
-}
-
-.ver-todos span {
-  font-size: 24px;
-  line-height: 0;
-}
-
-
-/* =========================================
-   TARJETAS
-========================================= */
-
-.proyectos-grid {
-  display: grid;
-
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-
-  gap: 28px 20px;
-}
-
-.proyecto-card {
-  min-width: 0;
-  color: #000;
-}
-
-.proyecto-card img {
-  display: block;
-
-  width: 100%;
-  height: 125px;
-
-  object-fit: cover;
-
-  border-radius: 12px;
-}
-
-.proyecto-card h3 {
-  margin-top: 12px;
-
-  color: #000;
-
-  font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1.25;
-}
-
 
 /* =========================================
    ÁREA CLIENTE
@@ -347,10 +256,6 @@
     padding: 25px;
   }
 
-  .proyectos-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
 }
 
 
@@ -406,27 +311,85 @@
     padding: 20px;
   }
 
-  .proyectos-header {
-    align-items: flex-start;
+}
+
+
+/* =========================================
+   MENÚ MÓVIL (HAMBURGUESA)
+   Solo se ve por debajo de 900px y con el menú abierto.
+   Reutiliza los colores y tipografías del Navbar actual.
+========================================= */
+
+.nav-cliente-movil {
+  display: none;
+}
+
+@media (max-width: 900px) {
+
+  .navbar-abierto .navbar-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+
+    display: flex;
     flex-direction: column;
-    gap: 15px;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+
+    padding: 6px 20px 20px;
+
+    background: rgba(0, 0, 0, 0.96);
+    border-top: 1px solid rgba(245, 196, 0, 0.25);
+    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.5);
   }
 
-  .proyectos-header h2 {
-    font-size: 22px;
+  .navbar-abierto .navbar-menu a,
+  .navbar-abierto .nav-link-button {
+    display: block;
+    padding: 14px 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 14px;
   }
 
-  .proyectos-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px 12px;
+  .navbar-abierto .nav-proyectos {
+    display: block;
   }
 
-  .proyecto-card img {
-    height: 100px;
+  .navbar-abierto .navbar-menu a.active::after {
+    display: none;
   }
 
-  .proyecto-card h3 {
+  .navbar-abierto .nav-cliente-movil {
+    display: block;
+    align-self: flex-start;
+    margin-top: 18px;
+    padding: 12px 20px;
+
+    /* borde dorado: el fondo negro del botón se confunde con el del panel */
+    border: 1px solid rgba(245, 196, 0, 0.6);
+    border-radius: 30px;
+
+    background: #000;
+    color: #f5c400;
+
+    font-family: 'Montserrat', sans-serif;
     font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .navbar-abierto .nav-cliente-movil:hover {
+    background: #f5c400;
+    color: #000;
+  }
+
+  /* El panel de proyectos es de "hover": no aplica en pantallas táctiles/angostas */
+  .proyectos-flotante {
+    display: none;
   }
 
 }

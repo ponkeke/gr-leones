@@ -1,9 +1,28 @@
+import { useEffect, useState } from 'react'
 import './Proyectos.css'
 
 import tituloProyectos from '../../assets/images/E-terreno.png'
 import leon from '../../assets/images/chat.png'
+import { getProyectos } from '../../services/api'
+import { formatearPrecio } from '../../utils/formato'
+
+const MAX_DESTACADOS = 4
 
 function Proyectos() {
+  const [destacados, setDestacados] = useState([])
+
+  useEffect(() => {
+    let cancelado = false
+    getProyectos()
+      .then((data) => {
+        if (!cancelado) setDestacados(data.slice(0, MAX_DESTACADOS))
+      })
+      .catch(() => {})
+    return () => {
+      cancelado = true
+    }
+  }, [])
+
   return (
     <section className="proyectos" id="proyectos">
 
@@ -34,10 +53,27 @@ function Proyectos() {
           <h2>PROYECTOS DESTACADOS</h2>
 
           <div className="proyectos-list">
-            {/* Aquí después irán los proyectos de la base de datos */}
+            {destacados.map((item) => (
+              <a
+                key={item.id}
+                className="proyecto-destacado-item"
+                href={`/detalle-proyecto?id=${item.id}`}
+              >
+                <span className="proyecto-destacado-nombre">{item.nombre}</span>
+                <span className="proyecto-destacado-ubicacion">
+                  {item.lotesDisponibles} disponibles
+                </span>
+                <span className="proyecto-destacado-precio">
+                  {item.precioDesde === null ? 'Precio por confirmar' : `Desde ${formatearPrecio(item.precioDesde)}`}
+                </span>
+              </a>
+            ))}
           </div>
 
-          <button className="proyectos-button">
+          <button
+            className="proyectos-button"
+            onClick={() => { window.location.href = '/proyectospage' }}
+          >
             Elegir mi lote →
           </button>
 

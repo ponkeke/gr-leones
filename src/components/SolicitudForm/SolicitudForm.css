@@ -1,0 +1,150 @@
+.solicitud-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(3px);
+}
+
+.solicitud-modal {
+  position: relative;
+  width: min(100%, 480px);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+
+  padding: 28px 26px;
+  border: 1px solid rgba(245, 196, 0, 0.35);
+  border-radius: 18px;
+  background: rgba(15, 15, 15, 0.96);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.solicitud-cerrar {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.solicitud-titulo {
+  margin-bottom: 4px;
+  padding-right: 30px;
+  color: #edeee4;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.solicitud-referencia {
+  margin-bottom: 18px;
+  color: #f5c400;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+}
+
+.solicitud-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.solicitud-span-2 {
+  grid-column: span 2;
+}
+
+.solicitud-form input,
+.solicitud-form textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 11px 12px;
+
+  border: 1px solid #414141;
+  border-radius: 7px;
+  background: #171717;
+  color: #f1efe7;
+
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  outline: none;
+  resize: vertical;
+}
+
+.solicitud-form input::placeholder,
+.solicitud-form textarea::placeholder {
+  color: #777;
+}
+
+.solicitud-form input:focus,
+.solicitud-form textarea:focus {
+  border-color: #f5c400;
+}
+
+.solicitud-error {
+  margin-top: 10px;
+  color: #ff6b6b;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+}
+
+.solicitud-enviar {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.solicitud-enviar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.solicitud-exito {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 6px 6px;
+  text-align: center;
+}
+
+.solicitud-exito h3 {
+  color: #edeee4;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+}
+
+.solicitud-exito p {
+  color: #bdbdbd;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.solicitud-exito .btn-buscar {
+  margin-top: 8px;
+  padding: 12px 30px;
+}
+
+@media (max-width: 560px) {
+  .solicitud-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .solicitud-span-2 {
+    grid-column: span 1;
+  }
+}

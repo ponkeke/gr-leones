@@ -1,0 +1,304 @@
+.simulador {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 100vh;
+  padding: 110px 20px 60px;
+  color: #fff;
+}
+
+.simulador-estado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 120px 20px;
+  color: #eee;
+  font-family: 'Raleway', sans-serif;
+  text-align: center;
+}
+
+.simulador-estado .btn-proyecto {
+  padding: 13px 22px;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.simulador-contenido {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.simulador-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 14px;
+  color: #f5c400;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.simulador-volver:hover {
+  text-decoration: underline;
+}
+
+.simulador-contenido h1 {
+  margin-bottom: 6px;
+  color: #edeee4;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.simulador-subtitulo {
+  margin-bottom: 22px;
+  color: #a8a8a8;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+}
+
+/* Paneles: misma tarjeta que Detalle de proyecto / Lotes */
+
+.simulador-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.simulador-panel {
+  padding: 22px;
+  border: 1px solid rgba(255, 222, 8, 0.16);
+  border-radius: 12px;
+  background: rgba(31, 31, 30, 0.76);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.22);
+}
+
+.simulador-panel-titulo {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #323131;
+  color: #f5c400;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Datos del lote */
+
+.simulador-datos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.simulador-dato-ancho {
+  grid-column: span 2;
+}
+
+.simulador-datos dt {
+  margin-bottom: 4px;
+  color: #8f8f8f;
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+}
+
+.simulador-datos dd {
+  color: #eee;
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.simulador-dato-precio {
+  color: #f5c400 !important;
+}
+
+.simulador-aviso {
+  margin-top: 16px;
+  padding: 10px 12px;
+  border: 1px solid rgba(245, 196, 0, 0.3);
+  border-radius: 7px;
+  color: #d8d8d8;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.simulador-form .simulador-aviso {
+  margin: 0 0 16px;
+}
+
+/* Formulario */
+
+.simulador-campo {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.simulador-campo > span {
+  display: block;
+  margin-bottom: 6px;
+  color: #8f8f8f;
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+}
+
+.simulador-input-moneda {
+  display: flex;
+  align-items: center;
+  border: 1px solid #414141;
+  border-radius: 7px;
+  background: #171717;
+}
+
+.simulador-input-moneda:focus-within {
+  border-color: #f5c400;
+}
+
+.simulador-input-moneda b {
+  padding-left: 12px;
+  color: #f5c400;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+}
+
+.simulador-input-moneda input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  border: none;
+  background: transparent;
+  color: #f1efe7;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  outline: none;
+}
+
+.simulador-input-moneda input::placeholder {
+  color: #777;
+}
+
+.simulador-campo select {
+  width: 100%;
+  height: 43px;
+  padding: 0 10px;
+  border: 1px solid #414141;
+  border-radius: 7px;
+  background: #171717;
+  color: #f1efe7;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  outline: none;
+}
+
+.simulador-campo select:focus {
+  border-color: #f5c400;
+}
+
+.simulador-input-moneda input:disabled,
+.simulador-campo select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.simulador-error {
+  margin-bottom: 14px;
+  color: #ff6b6b;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.simulador-calcular {
+  width: 100%;
+  height: 44px;
+  font-size: 12px;
+}
+
+.simulador-calcular:disabled,
+.simulador-cotizar:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Resultado */
+
+.simulador-resultado {
+  grid-column: 1 / -1;
+}
+
+.simulador-filas > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid #323131;
+}
+
+.simulador-filas dt {
+  color: #a8a8a8;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+}
+
+.simulador-filas dd {
+  color: #eee;
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.simulador-fila-destacada dt {
+  color: #edeee4;
+  font-weight: 700;
+}
+
+.simulador-fila-destacada dd {
+  color: #f5c400;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.simulador-nota {
+  margin: 14px 0 18px;
+  color: #8f8f8f;
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.simulador-cotizar {
+  padding: 13px 22px;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .simulador-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .simulador {
+    padding: 95px 15px 40px;
+  }
+
+  .simulador-panel {
+    padding: 18px 16px;
+  }
+
+  .simulador-cotizar {
+    width: 100%;
+  }
+}

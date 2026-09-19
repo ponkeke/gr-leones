@@ -2,7 +2,30 @@ import './Footer.css'
 
 import peru from '../../assets/images/peru.png'
 
+// Datos de contacto. `confirmado: false` los muestra como texto; al pasar a `true` se
+// vuelven enlaces (tel: / mailto:) generados con el mismo valor. Ponlos en `true` solo
+// cuando los datos sean los definitivos. WhatsApp no está definido: no se muestra.
+const CONTACTO = {
+  direccion: 'Huancayo, Junín - Perú',
+  telefono: { texto: '+51 925 281 766', confirmado: false },
+  correo: { texto: 'contacto@leones.com', confirmado: false },
+}
+
+// PENDIENTE: ruta o URL de la página de "Términos y condiciones" (aún no existe).
+// Con un valor, el texto del pie se convierte en enlace.
+const URL_TERMINOS = null
+
+// Devuelve el href (o null si el dato aún no está confirmado).
+const hrefTelefono = ({ texto, confirmado }) =>
+  confirmado ? `tel:${texto.replace(/[^\d+]/g, '')}` : null
+
+const hrefCorreo = ({ texto, confirmado }) =>
+  confirmado ? `mailto:${texto}` : null
+
 function Footer() {
+  const enlaceTelefono = hrefTelefono(CONTACTO.telefono)
+  const enlaceCorreo = hrefCorreo(CONTACTO.correo)
+
   return (
     <footer id="contacto" className="footer">
 
@@ -70,11 +93,25 @@ function Footer() {
 
           <h3>Contáctanos</h3>
 
-          <p>📍 Huancayo, Junín - Perú</p>
+          <p>📍 {CONTACTO.direccion}</p>
 
-          <p>📞 +51 999 999 999</p>
+          <p>
+            📞{' '}
+            {enlaceTelefono ? (
+              <a href={enlaceTelefono}>{CONTACTO.telefono.texto}</a>
+            ) : (
+              CONTACTO.telefono.texto
+            )}
+          </p>
 
-          <p>✉ contacto@leones.com</p>
+          <p>
+            ✉{' '}
+            {enlaceCorreo ? (
+              <a href={enlaceCorreo}>{CONTACTO.correo.texto}</a>
+            ) : (
+              CONTACTO.correo.texto
+            )}
+          </p>
 
         </div>
 
@@ -104,7 +141,11 @@ function Footer() {
           </p>
 
           <p>
-            Términos y condiciones
+            {URL_TERMINOS ? (
+              <a href={URL_TERMINOS}>Términos y condiciones</a>
+            ) : (
+              'Términos y condiciones'
+            )}
           </p>
 
         </div>

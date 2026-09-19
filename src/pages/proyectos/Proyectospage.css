@@ -6,25 +6,17 @@
   min-height: 100vh;
   padding: 32px 20px 60px;
 
-  background: transparent;
 }
 .proyectos-page::before {
   content: '';
 
   position: absolute;
   inset: 0;
-
+  background-color: #11111120;
   z-index: -1;
   pointer-events: none;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(227, 208, 38, 0.1) 1%,
-      rgba(16, 15, 10, 0.45) 19%,
-      rgba(0, 0, 0, 0.85) 30%,
-      rgba(0, 0, 0, 0.714) 90%
-    );
+  
+  
 }
 
 
@@ -32,55 +24,59 @@
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+  
 }
 
 /* Encabezado */
 
+.proyectos-top-container {
+  width: min(100% - 56px, 1240px);
+  margin: 0 auto;
+}
+
 .proyectos-intro {
+  position: relative;
+  min-height: 305px;
+  overflow: hidden;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 30px;
-  margin-bottom: 25px;
+  align-items: center;
+  font-family: 'Anton', sans-serif;
+  letter-spacing: 1px;
 }
 
-
-
-.proyectos-intro h1 {
-  max-width: 600px;
-  color: #fff;
-  font-family: 'Montserrat', sans-serif;
-  font-size: clamp(32px, 4vw, 58px);
-  font-weight: 900;
-  line-height: 0.98;
-  text-transform: uppercase;
+.proyectos-intro-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  
+    
 }
 
-.proyectos-intro h1 span {
+.proyectos-titulo {
+  position: relative;
+  z-index: 1;
+}
+
+.logo-proyecto{
   display: block;
-  color: #f5c400;
+  width: min(100%, 620px);
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  margin: -10px 0px 18px;
 }
+
 
 .proyectos-descripcion {
   margin-top: 12px;
   color: #ffffff;
   font-size: 15px;
   font-family: 'Raleway', sans-serif;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
-.proyectos-frase {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  color: #fff;
-  font-family: 'Anton', sans-serif;
-  font-size: 28px;
-  font-style: italic;
-  line-height: 0.95;
-  transform: rotate(-8deg);
-  opacity: 0.85;
-}
+
 
 /* Indicadores */
 
@@ -91,7 +87,7 @@
   margin-bottom: 25px;
 }
 .indicador span{
-  color: #817c70;
+  color: #afafaf;
   font-family: 'Raleway', sans-serif;
   padding: 5px;
   letter-spacing: 2px;
@@ -132,8 +128,8 @@ font-family: 'Montserrat', sans-serif;
   padding: 12px;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 18px;
-  background: rgba(10, 10, 10, 0.78);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(1px);
 }
 
 .proyectos-filtros {
@@ -166,6 +162,7 @@ font-family: 'Montserrat', sans-serif;
   display: grid;
   grid-template-columns: minmax(220px, 1.7fr) 1fr 1fr 1fr auto;
   gap: 8px;
+  
 }
 
 .proyectos-input,
@@ -435,6 +432,10 @@ font-family: 'Montserrat', sans-serif;
 @media (max-width: 650px) {
   .proyectos-page {
     padding: 25px 15px 40px;
+  }
+
+  .proyectos-top-container {
+    width: min(100% - 30px, 1240px);
   }
 
   .proyectos-intro {

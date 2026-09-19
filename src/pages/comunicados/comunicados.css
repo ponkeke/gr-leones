@@ -3,11 +3,19 @@
   background: transparent;
   color: #fbf6f6;
   overflow: hidden;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.038) 0%,
+    rgba(6, 6, 6, 0.738) 30%,
+    rgba(0, 0, 0, 0.819) 70%,
+    rgba(0, 0, 0, 0.95) 100%
+  );
 }
 
-.container {
+.comunicados .container {
   width: min(100% - 56px, 1240px);
   margin: 0 auto;
+ 
 }
 
 /* =========================
@@ -30,10 +38,10 @@
   inset: 0;
   background:
     linear-gradient(
-      90deg,
-      rgba(236, 107, 15, 0.877) 0%,
-      rgba(0, 0, 0, 0.621) 50%,
-    rgb(0, 0, 0) 80%,
+      10deg,
+      rgba(255, 170, 0, 0.774) 0%,
+      rgba(0, 0, 0, 0.086) 50%,
+    rgba(0, 0, 0, 0.036) 60%,
       transparent 
     ),
     linear-gradient(
@@ -42,12 +50,6 @@
       transparent 70%
     );
 }
-.navbar {
-  position: relative;
-  z-index: 10;
-  background:#000000;
-}
-
 .comunicados-hero-contenido {
   position: relative;
   min-height: 305px;
@@ -167,8 +169,8 @@
 
 .comunicados-listado {
   padding: 28px 0 55px; 
-   background: rgba(10, 10, 10, 0.78);
-  backdrop-filter: blur(8px);
+   background: rgba(10, 10, 10, 0.738);
+  backdrop-filter: blur(1px);
 }
 
 .comunicados-listado-cabecera {
@@ -336,15 +338,8 @@
   overflow: hidden;
   border-top: 1px solid #f5c400;
   border-bottom: 1px solid #f5c400;
-  background-image:
-    linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.82),
-      rgba(0, 0, 0, 0.45)
-    ),
-    url('/images/fondo-banner-eventos.jpg');
-  background-size: cover;
-  background-position: center;
+  
+  
 }
 
 .comunicados-banner-contenido {
@@ -450,7 +445,7 @@
 }
 
 @media (max-width: 650px) {
-  .container {
+  .comunicados .container {
     width: min(100% - 30px, 1240px);
   }
 
