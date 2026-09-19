@@ -6,13 +6,10 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
-
   padding-top: 90px;
   padding-bottom: 40px;
-
   display: flex;
   align-items: flex-start;
-
   overflow: hidden;
   background: transparent;
   z-index: 1;
@@ -55,16 +52,16 @@
   z-index: 1;
   animation: latidoTitulo 3s ease-in-out infinite;
   transform-origin: center;
- 
 }
+
 @keyframes latidoTitulo {
   0%,
   100% {
-    transform: scale(1.1);
+    transform: scale(1);
   }
 
   15% {
-    transform: scale(1.025);
+    transform: scale(1.01);
   }
 
   30% {
@@ -72,13 +69,14 @@
   }
 
   45% {
-    transform: scale(1.025);
+    transform: scale(1.01);
   }
 
   60% {
     transform: scale(1);
   }
 }
+
 /* =========================================
    DESCRIPCIÓN
 ========================================= */
@@ -87,7 +85,6 @@
   width: 100%;
   max-width: 500px;
   margin-top: -10px;
-
   color: #fff;
   font-family: 'Raleway', sans-serif;
   font-size: 16px;
@@ -110,13 +107,10 @@
 .secondary-button {
   min-height: 46px;
   padding: 0 25px;
-
   border-radius: 30px;
-
   font-family: 'Montserrat', sans-serif;
   font-size: 15px;
   font-weight: 700;
-
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -157,9 +151,7 @@
 .hero-features {
   width: 100%;
   max-width: 570px;
-
   margin-top: 40px;
-
   display: flex;
   align-items: flex-start;
   gap: 18px;
@@ -168,11 +160,9 @@
 .feature {
   flex: 1;
   min-width: 0;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-
   text-align: center;
 }
 
@@ -185,7 +175,6 @@
 
 .feature p {
   margin-top: 8px;
-
   color: #fff;
   font-family: 'Raleway', sans-serif;
   font-size: 14px;
@@ -199,16 +188,12 @@
 
 .hero-leon {
   position: absolute;
- 
   left: -200px;
   top: 35%;
-
   width: 550px;
-  height: 100;
-
+  height: auto;
   opacity: 0.19;
   transform: translateY(-50%);
-
   pointer-events: none;
 }
 
@@ -292,9 +277,7 @@
    CELULAR
 ========================================= */
 
-
 @media (max-width: 600px) {
-
   .hero {
     min-height: auto;
     padding-top: 85px;
@@ -320,6 +303,7 @@
     width: 100%;
     max-width: 100%;
     overflow: hidden;
+    transform: none;
   }
 
   .hero-title img {
@@ -328,6 +312,7 @@
     max-width: 100%;
     height: auto;
     transform: none;
+    animation: none;
   }
 
   .hero-description {
