@@ -1,0 +1,283 @@
+/* Panel del geovisor: mismo marco oscuro/dorado tanto en la vista normal como dentro del
+   visor ampliado (ahí solo cambia el contenedor exterior, ver más abajo). */
+.plano-interactivo,
+.plano-interactivo-overlay-contenido {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 10px;
+  
+  border-radius: 20px;
+}
+
+.plano-lienzo {
+  position: relative;
+}
+
+.plano-lienzo-scroll {
+  overflow: auto;
+  max-height: min(800vh, 770px);
+  border-radius: 14px;
+}
+
+/* Marco que recibe la imagen: fondo oscuro + viñeta, para que el blanco del plano original
+   (es un plano comercial técnico, no una foto aérea) se funda con el resto de la página en vez
+   de verse como una caja blanca suelta. */
+.plano-lienzo-marco {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+ 
+}
+
+
+
+
+
+.plano-lienzo-zoom {
+  transform-origin: center top;
+  transition: transform 0.2s ease;
+}
+
+.plano-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.plano-imagen-simple {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Cada lote: visible desde el inicio (color de estado ya aplicado por React), destaca al
+   pasar el mouse y al quedar seleccionado. */
+.plano-lote {
+  cursor: pointer;
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  fill-opacity: 0.55;
+  transition:
+    fill-opacity 0.15s ease,
+    stroke 0.15s ease,
+    stroke-width 0.15s ease;
+}
+
+.plano-lote:hover {
+  fill-opacity: 0.85;
+  stroke: #f5c400;
+  stroke-width: 4;
+}
+
+.plano-lote:focus {
+  outline: none;
+  stroke: #f5c400;
+  stroke-width: 4;
+}
+
+.plano-lote-seleccionado {
+  fill-opacity: 0.95;
+  stroke: #f5c400;
+  stroke-width: 5;
+}
+
+/* Por si un polígono todavía no encuentra su lote en los datos */
+.plano-lote.sin-datos {
+  fill: transparent;
+  stroke: transparent;
+  pointer-events: none;
+}
+
+/* =========================
+   TOOLTIP AL PASAR EL MOUSE
+========================= */
+
+.plano-tooltip {
+  position: fixed;
+  z-index: 6100;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 12px;
+  border: 1px solid rgba(245, 196, 0, 0.4);
+  border-radius: 10px;
+  background: rgba(12, 12, 12, 0.95);
+  color: #edeee4;
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  pointer-events: none;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.plano-tooltip strong {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  color: #f5c400;
+}
+
+/* =========================
+   CONTROLES DE ZOOM
+========================= */
+
+.plano-controles-zoom {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(245, 196, 0, 0.35);
+  border-radius: 10px;
+  background: rgba(15, 15, 15, 0.92);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.plano-controles-zoom button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-bottom: 1px solid rgba(245, 196, 0, 0.18);
+  background: transparent;
+  color: #edeee4;
+  cursor: pointer;
+}
+
+.plano-controles-zoom button:last-child {
+  border-bottom: none;
+}
+
+.plano-controles-zoom button:hover:not(:disabled) {
+  background: rgba(245, 196, 0, 0.16);
+  color: #f5c400;
+}
+
+.plano-controles-zoom button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* =========================
+   BOTÓN AMPLIAR / CERRAR
+========================= */
+
+.plano-ampliar-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(245, 196, 0, 0.35);
+  border-radius: 50%;
+  background: rgba(15, 15, 15, 0.92);
+  color: #edeee4;
+  cursor: pointer;
+}
+
+.plano-ampliar-btn:hover {
+  background: rgba(245, 196, 0, 0.16);
+  color: #f5c400;
+}
+
+/* =========================
+   LEYENDA
+========================= */
+
+.plano-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px 24px;
+  margin-top: 14px;
+  padding: 10px 14px;
+}
+
+.plano-leyenda-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #ccc;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+}
+
+.plano-leyenda-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* =========================
+   VISOR AMPLIADO (pantalla completa)
+========================= */
+
+.plano-interactivo-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 6000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.86);
+  backdrop-filter: blur(4px);
+}
+
+.plano-interactivo-overlay-contenido {
+  max-width: 1300px;
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+}
+
+.plano-interactivo-overlay-contenido .plano-lienzo-scroll {
+  max-height: calc(100vh - 160px);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+  .plano-interactivo,
+  .plano-interactivo-overlay-contenido {
+    padding: 10px;
+    border-radius: 14px;
+  }
+
+  .plano-leyenda {
+    gap: 8px 14px;
+  }
+
+  .plano-leyenda-item {
+    font-size: 11px;
+  }
+
+  .plano-tooltip {
+    display: none;
+  }
+}
+
+@media (max-width: 650px) {
+  .plano-interactivo-overlay {
+    padding: 8px;
+  }
+
+  .plano-interactivo-overlay-contenido {
+    max-height: calc(100vh - 16px);
+  }
+
+  .plano-interactivo-overlay-contenido .plano-lienzo-scroll {
+    max-height: calc(100vh - 120px);
+  }
+}

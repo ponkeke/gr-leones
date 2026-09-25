@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import './Proyectos.css'
 
+
 import tituloProyectos from '../../assets/images/E-terreno.png'
 import leon from '../../assets/images/chat.png'
 import { getProyectos } from '../../services/api'
@@ -9,6 +10,7 @@ import { formatearPrecio } from '../../utils/formato'
 const MAX_DESTACADOS = 4
 
 function Proyectos() {
+  
   const [destacados, setDestacados] = useState([])
 
   useEffect(() => {
@@ -72,7 +74,7 @@ function Proyectos() {
 
           <button
             className="proyectos-button"
-            onClick={() => { window.location.href = '/proyectospage' }}
+            onClick={() => { window.location.href = '/lotes' }}
           >
             Elegir mi lote →
           </button>

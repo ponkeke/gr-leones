@@ -60,9 +60,7 @@ function ProyectosPage() {
     }
   }, [])
 
-  const irADetalle = (id) => {
-    window.location.assign(`/detalle-proyecto?id=${id}`)
-  }
+  
 
   const ubicaciones = useMemo(
     () => [...new Set(proyectos.map((p) => p.ubicacion).filter(Boolean))],
@@ -306,11 +304,13 @@ function ProyectosPage() {
                   </p>
 
                   <div className="proyecto-acciones">
-                    <button className="btn-detalles" onClick={() => irADetalle(item.id)}>
-                      Ver más detalles →
-                    </button>
-
-                    <button className="btn-proyecto" onClick={() => irADetalle(item.id)}>
+                    
+                    <button
+                      className="btn-proyecto"
+                      onClick={() => {
+                        window.location.href = `/lotes?id=${item.id}`
+                      }}
+                    >
                       Ver proyecto <span>→</span>
                     </button>
                   </div>

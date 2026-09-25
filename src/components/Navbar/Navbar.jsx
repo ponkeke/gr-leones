@@ -59,29 +59,29 @@ function Navbar() {
 
           {/* PROYECTOS */}
           <div
-            className="nav-proyectos"
-            onMouseEnter={abrirProyectos}
-            onMouseLeave={cerrarProyectos}
-          >
-            <a
-              href="/proyectospage"
-              className={`nav-link-button ${claseActiva(['/proyectospage']) ?? ''}`}
-              onClick={cerrarMenu}
-            >
-              Proyectos
-            </a>
-            {mostrarProyectos && (
-              <div
-                className="proyectos-flotante"
-                onMouseEnter={abrirProyectos}
-                onMouseLeave={cerrarProyectos}
-              >
-                <Proyecto />
-              </div>
-            )}
-          </div>
+                  className="nav-proyectos"
+                  onMouseEnter={abrirProyectos}
+                  onMouseLeave={cerrarProyectos}
+                >
+                  <a
+                    href="/proyectospage"
+                    className={`nav-link-button ${claseActiva(['/proyectospage']) ?? ''}`}
+                    onClick={cerrarMenu}
+                  >
+                    Proyectos ▼
+                  </a>
 
-          <a href="/lotes" className={claseActiva(['/lotes'])} onClick={cerrarMenu}>Lotes</a>
+                  {mostrarProyectos && (
+                    <div
+                      className="proyectos-flotante"
+                      onMouseEnter={abrirProyectos}
+                      onMouseLeave={cerrarProyectos}
+                    >
+                      <Proyecto />
+
+                    </div>
+                  )}
+</div>
           <a href="/comunicados" className={claseActiva(['/comunicados'])} onClick={cerrarMenu}>Comunicados</a>
           <a href="/nosotros" className={claseActiva(['/nosotros'])} onClick={cerrarMenu}>Nosotros</a>
           <a href="/promociones" className={claseActiva(['/promociones'])} onClick={cerrarMenu}>Promociones</a>
@@ -94,12 +94,22 @@ function Navbar() {
           >
             Área cliente
           </button>
-
+          <button
+            className="nav-cliente-movil"
+            onClick={() => { window.location.href = '/login' }}
+          >
+            Registrarse
+          </button>
+          
         </nav>
 
         {/* ÁREA CLIENTE */}
         <button className="client-button" onClick={() => { window.location.href = '/login' }}>
           Área cliente
+        </button>
+
+         <button className="client-button" onClick={() => { window.location.href = '/login' }}>
+          Registrarse
         </button>
 
         {/* HAMBURGUESA */}

@@ -129,9 +129,6 @@ function Comunicados() {
                 alt="Novedades y Comunicados"
                 />
 
-            <p>
-              Mantente al día con nuestras novedades, avances, eventos y más.
-            </p>
           </div>
 
          <div className="comunicados-hero-imagen">

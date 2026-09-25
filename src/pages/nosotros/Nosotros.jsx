@@ -23,12 +23,8 @@ import {
 
 import './Nosotros.css'
 import leonN from '../../assets/images/leon-nosotros.png'
-import asVen1 from '../../assets/images/asVentas1.png'
-import asVen2 from '../../assets/images/asVentas2.png'
-import asVen3 from '../../assets/images/asVentas3.png'
-import asVen4 from '../../assets/images/asVentas4.png'
-import drCom from '../../assets/images/drComercial.png'
 import nosotros from '../../assets/images/nosotros-logo.png'
+import { integrantes } from '../../data/equipo'
 
 const caracteristicas = [
   {
@@ -57,105 +53,6 @@ const categorias = [
   'Todos',
   'Directivos',
   'Asesores',
-]
-
-/*
-  Datos del panel que aparece al pasar el mouse (o tocar) la tarjeta.
-
-  Todavía NO existen en el proyecto, por eso están en null y el panel
-  no muestra esas filas. Para completarlos, sobrescribe el campo en el
-  integrante correspondiente (después del `...PERFIL_PENDIENTE`):
-
-    descripcion:   'Texto de "Más sobre mí"'
-    experiencia:   '+ 6 años'
-    especialidad:  'Venta de lotes residenciales y comerciales'
-    zona:          'Huancayo y alrededores'
-    idiomas:       ['Español', 'Inglés básico']   (o un texto simple)
-    redes: {                                       (solo las que existan;
-      whatsapp:  'https://wa.me/51XXXXXXXXX',       enlaces completos)
-      linkedin:  'https://www.linkedin.com/in/...',
-      instagram: 'https://www.instagram.com/...',
-      facebook:  'https://www.facebook.com/...',
-      email:     'mailto:correo@dominio.com',
-    }
-    contacto:      'https://wa.me/51XXXXXXXXX'     (enlace del botón "Contáctame")
-*/
-const PERFIL_PENDIENTE = {
-  descripcion: null,
-  experiencia: null,
-  especialidad: null,
-  zona: null,
-  idiomas: null,
-  redes: null,
-  contacto: null,
-}
-
-const integrantes = [
-  {
-    // TODO: reemplazar por la fotografía real del Director General
-    id: 'director-general',
-    nombre: 'Nombre del integrante',
-    cargo: 'Director General',
-    frase: 'Construimos confianza para crear grandes proyectos.',
-    categoria: 'Directivos',
-    imagen: '/images/equipo-director-general.jpg',
-    ...PERFIL_PENDIENTE,
-  },
-  {
-    id: 'director-comercial',
-    nombre: 'ALEX CRISTOBAL',
-    cargo: 'Director Comercial',
-    frase: 'Cada cliente merece un proyecto pensado a su medida.',
-    categoria: 'Directivos',
-    imagen: drCom,
-    ...PERFIL_PENDIENTE,
-  },
-  {
-    id: 'asesora-ventas-1',
-    nombre: 'ROMELY SCHIPPER',
-    cargo: 'Asesora de ventas',
-    frase: 'La planificación es la base de todo gran resultado.',
-    categoria: 'Asesores',
-    imagen: asVen1,
-    ...PERFIL_PENDIENTE,
-  },
-  {
-    id: 'asesora-ventas-2',
-    nombre: 'NAHOMY LIMAS',
-    cargo: 'Asesora de ventas',
-    frase: 'La planificación es la base de todo gran resultado.',
-    categoria: 'Asesores',
-    imagen: asVen2,
-    ...PERFIL_PENDIENTE,
-  },
-  {
-    id: 'asesora-ventas-3',
-    nombre: 'LUCERO BELTRÁN',
-    cargo: 'Asesora de ventas',
-    frase: 'La transparencia legal protege cada inversión.',
-    categoria: 'Asesores',
-    imagen: asVen3,
-    ...PERFIL_PENDIENTE,
-  },
-  {
-    id: 'asesora-ventas-4',
-    nombre: 'ALESSANDRA MERCADO',
-    cargo: 'Asesora de ventas',
-    frase: 'La transparencia legal protege cada inversión.',
-    categoria: 'Asesores',
-    imagen: asVen4,
-    ...PERFIL_PENDIENTE,
-  },
-  {
-    // TODO: reemplazar por la fotografía real de la Gerencia de Administración
-    id: 'gerente-administracion',
-    nombre: 'Nombre del integrante',
-    cargo: 'Gerente de Administración',
-    frase: 'La organización interna sostiene el crecimiento del grupo.',
-    categoria: 'Administración',
-    imagen: '/images/equipo-gerente-administracion.jpg',
-    ...PERFIL_PENDIENTE,
-  },
 ]
 
 // Filas del panel de detalle, en orden. Solo se dibujan las que tienen dato.
@@ -935,9 +832,12 @@ function Nosotros() {
                       onCerrar={cerrarPanel}
                       onPointerEnter={alEntrarPanel}
                       onPointerLeave={alSalirPanel}
+      
                     />
+                    
                   )}
                 </div>
+                
               </div>
             </div>
 

@@ -7,11 +7,11 @@ import Lotes from './pages/lotes/Lotes'
 import Comunicados from './pages/comunicados/comunicados'
 import Nosotros from './pages/nosotros/Nosotros'
 import Promociones from './pages/promociones/Promociones'
-import DetalleProyecto from './pages/detalleProyecto/DetalleProyecto'
 import Login from './pages/login/Login'
 import SimuladorCostos from './pages/simuladorCostos/SimuladorCostos'
 import NoEncontrada from './pages/noEncontrada/NoEncontrada'
-import { normalizarRuta } from './utils/rutas'
+import AreaInterna from './pages/areaInterna/AreaInterna'
+import { esRutaInterna, normalizarRuta } from './utils/rutas'
 
 // Rutas conocidas: cada una con la clase que aísla los estilos de su página.
 // "/inicio" es un alias de "/". Cualquier otra ruta muestra la vista 404.
@@ -23,7 +23,6 @@ const RUTAS = {
   '/comunicados': { clase: 'pagina-comunicados', Pagina: Comunicados },
   '/nosotros': { clase: 'pagina-nosotros', Pagina: Nosotros },
   '/promociones': { clase: 'pagina-promociones', Pagina: Promociones },
-  '/detalle-proyecto': { clase: 'pagina-detalle-proyecto', Pagina: DetalleProyecto },
   '/login': { clase: 'pagina-login', Pagina: Login },
   '/simulador-costos': { clase: 'pagina-simulador', Pagina: SimuladorCostos },
 }
@@ -46,6 +45,9 @@ function App() {
       destino.scrollIntoView({ behavior: 'smooth' })
     }
   }, [])
+
+  // /cliente/* y /asesor/*: área interna con su propio layout (sidebar + topbar), sin Navbar ni Footer.
+  if (esRutaInterna(ruta)) return <AreaInterna />
 
   return (
     <div className={`page ${claseDePagina}`}>

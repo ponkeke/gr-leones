@@ -1,6 +1,5 @@
 .simulador {
   position: relative;
-  z-index: 1;
   width: 100%;
   min-height: 100vh;
   padding: 110px 20px 60px;

@@ -29,3 +29,35 @@ export function etiquetaDisponibilidad(proyecto) {
   if (n === 0) return 'Sin lotes disponibles'
   return `${n} ${n === 1 ? 'lote disponible' : 'lotes disponibles'}`
 }
+
+/** Lote -> "MZ A - 07". */
+export function formatearLote(lote) {
+  if (!lote) return ''
+  return `${lote.manzana} - ${String(lote.numero).padStart(2, '0')}`
+}
+
+/** "14:00" -> "02:00 PM". */
+export function formatearHora(hhmm) {
+  if (!hhmm) return ''
+  const [horas, minutos] = hhmm.split(':').map(Number)
+  const periodo = horas < 12 ? 'AM' : 'PM'
+  const horas12 = horas % 12 === 0 ? 12 : horas % 12
+  return `${String(horas12).padStart(2, '0')}:${String(minutos).padStart(2, '0')} ${periodo}`
+}
+
+const DIAS_SEMANA = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+
+/** 2026-09-24 -> "Jueves 24/09/2026" (fecha local, sin desfase de zona horaria). */
+export function formatearFechaConDia(iso) {
+  if (!iso) return ''
+  const [anio, mes, dia] = iso.split('-').map(Number)
+  const diaSemana = DIAS_SEMANA[new Date(anio, mes - 1, dia).getDay()]
+  return `${diaSemana} ${formatearFecha(iso)}`
+}
+
+/** Fecha local en formato YYYY-MM-DD (toISOString usaría UTC y de noche daría "mañana" en Perú). */
+export function fechaLocalISO(fecha = new Date()) {
+  const mes = String(fecha.getMonth() + 1).padStart(2, '0')
+  const dia = String(fecha.getDate()).padStart(2, '0')
+  return `${fecha.getFullYear()}-${mes}-${dia}`
+}

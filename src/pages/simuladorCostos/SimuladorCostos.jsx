@@ -6,7 +6,7 @@ import { ESTADO_COLOR, ESTADO_LABEL } from '../../data/estados'
 import { OPCIONES_CUOTAS } from '../../data/simulador'
 import { formatearSoles } from '../../utils/formato'
 import { parsearMonto, validarSimulacion, calcularSimulacion } from '../../utils/simulador'
-import SolicitudForm from '../../components/SolicitudForm/SolicitudForm'
+import SolicitudCotizacion from '../../components/SolicitudCotizacion/SolicitudCotizacion'
 
 function useQueryLote() {
   const params = new URLSearchParams(window.location.search)
@@ -275,10 +275,10 @@ function SimuladorCostos() {
         </div>
       </div>
 
-      <SolicitudForm
+      <SolicitudCotizacion
         isOpen={mostrarSolicitud}
         onClose={() => setMostrarSolicitud(false)}
-        tipo="cotizacion"
+        textoVolver="Volver al simulador"
         proyecto={proyecto}
         lote={lote}
         simulacion={resultado}

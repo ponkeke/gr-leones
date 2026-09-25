@@ -1,0 +1,383 @@
+/* =========================================
+   FORMULARIOS DE SOLICITUD (información, cotización, visita)
+   Estilos compartidos: los tres formularios se ven y se comportan igual.
+   La capa (overlay, encabezado, X, scroll) la pone Modal.css.
+========================================= */
+
+.solicitud-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.solicitud-nota-obligatorios {
+  margin-top: -6px;
+  color: #999;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+}
+
+.solicitud-obligatorio {
+  color: #f5c400;
+  font-weight: 800;
+}
+
+/* ---------- Secciones numeradas ---------- */
+
+.solicitud-seccion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.solicitud-seccion-titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #edeee4;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.solicitud-paso {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #f5c400;
+  color: #111;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.solicitud-seccion-descripcion {
+  margin-top: -4px;
+  color: #a8a8a8;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+/* ---------- Campos ---------- */
+
+.solicitud-campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 12px;
+}
+
+.solicitud-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.solicitud-campo-ancho {
+  grid-column: 1 / -1;
+}
+
+.solicitud-etiqueta {
+  color: #d6d6d6;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.solicitud-opcional {
+  color: #8a8a8a;
+  font-weight: 500;
+}
+
+.solicitud-form input,
+.solicitud-form select,
+.solicitud-form textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 11px 12px;
+
+  border: 1px solid #414141;
+  border-radius: 8px;
+  background: #171717;
+  color: #f1efe7;
+
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.solicitud-form textarea {
+  resize: vertical;
+}
+
+.solicitud-form input[type='date'] {
+  color-scheme: dark;
+}
+
+.solicitud-form input::placeholder,
+.solicitud-form textarea::placeholder {
+  color: #6f6f6f;
+}
+
+.solicitud-form input:focus,
+.solicitud-form select:focus,
+.solicitud-form textarea:focus {
+  border-color: #f5c400;
+}
+
+.solicitud-form [aria-invalid='true'] {
+  border-color: #ff6b6b;
+}
+
+.solicitud-ayuda {
+  color: #8a8a8a;
+  font-family: 'Raleway', sans-serif;
+  font-size: 11.5px;
+  line-height: 1.4;
+}
+
+.solicitud-error-campo {
+  color: #ff8a8a;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.solicitud-mensaje-suave {
+  color: #a8a8a8;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12.5px;
+}
+
+/* ---------- Opciones tipo "chip" (motivo de consulta, horarios) ---------- */
+
+.solicitud-opciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-radius: 10px;
+  outline: none;
+}
+
+.solicitud-opciones[aria-invalid='true'] {
+  padding: 8px;
+  border: 1px solid #ff6b6b;
+}
+
+.solicitud-horas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.solicitud-opcion {
+  min-height: 40px;
+  padding: 9px 14px;
+
+  border: 1px solid #414141;
+  border-radius: 999px;
+  background: #171717;
+  color: #d6d6d6;
+
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.solicitud-horas .solicitud-opcion {
+  border-radius: 8px;
+}
+
+.solicitud-opcion:hover {
+  border-color: rgba(245, 196, 0, 0.6);
+}
+
+.solicitud-opcion:focus-visible {
+  outline: 2px solid #f5c400;
+  outline-offset: 2px;
+}
+
+.solicitud-opcion[aria-checked='true'] {
+  border-color: #f5c400;
+  background: #f5c400;
+  color: #111;
+}
+
+/* ---------- Listas de datos (lote, resumen, confirmación) ---------- */
+
+.solicitud-lista {
+  padding: 14px 16px;
+  border: 1px solid #333;
+  border-radius: 12px;
+  background: #171717;
+}
+
+.solicitud-lista-resumen {
+  border-color: rgba(245, 196, 0, 0.45);
+  background: rgba(245, 196, 0, 0.05);
+}
+
+.solicitud-lista-confirmacion {
+  width: 100%;
+  text-align: left;
+}
+
+.solicitud-lista-titulo {
+  margin-bottom: 10px;
+  color: #999;
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.solicitud-lista-resumen .solicitud-lista-titulo {
+  color: #f5c400;
+}
+
+.solicitud-lista dl {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 14px;
+}
+
+.solicitud-lista-ancho {
+  grid-column: 1 / -1;
+}
+
+.solicitud-lista dt {
+  color: #999;
+  font-family: 'Raleway', sans-serif;
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.solicitud-lista dd {
+  margin-top: 2px;
+  color: #f5c400;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.solicitud-lista dd.solicitud-lista-pendiente {
+  color: #777;
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* ---------- Envío ---------- */
+
+.solicitud-envio {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.solicitud-boton {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 20px;
+
+  border: none;
+  border-radius: 8px;
+  background: #f5c400;
+  color: #111;
+
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.solicitud-boton:hover:not(:disabled) {
+  background: #ffd92e;
+}
+
+.solicitud-boton:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.solicitud-boton:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.solicitud-aclaracion {
+  color: #a8a8a8;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  text-align: center;
+}
+
+.solicitud-error-envio {
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 107, 107, 0.5);
+  border-radius: 8px;
+  background: rgba(255, 107, 107, 0.08);
+  color: #ff8a8a;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12.5px;
+}
+
+/* ---------- Confirmación ---------- */
+
+.solicitud-confirmacion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding-top: 6px;
+  text-align: center;
+}
+
+.solicitud-confirmacion-mensaje {
+  color: #d6d6d6;
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.solicitud-confirmacion-nota {
+  color: #a8a8a8;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12.5px;
+}
+
+.solicitud-confirmacion .solicitud-boton {
+  margin-top: 6px;
+}
+
+/* =========================================
+   CELULAR
+========================================= */
+
+@media (max-width: 600px) {
+  .solicitud-campos {
+    grid-template-columns: 1fr;
+  }
+
+  /* 16px evita que iOS haga zoom automático al tocar un campo */
+  .solicitud-form input,
+  .solicitud-form select,
+  .solicitud-form textarea {
+    font-size: 16px;
+  }
+
+  .solicitud-horas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

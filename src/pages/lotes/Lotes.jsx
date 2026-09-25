@@ -1,15 +1,32 @@
 import { useEffect, useMemo, useState } from 'react'
-import { MapPin, Rows3, LayoutGrid, X } from 'lucide-react'
+import { MapPin, Rows3, LayoutGrid, MessageCircle, FileText, CalendarDays, Calculator, ChevronRight } from 'lucide-react'
 import './Lotes.css'
 import { getProyectos, getProyecto, getLotesDeProyecto } from '../../services/api'
 import { ESTADOS_LOTE, ESTADO_COLOR, ESTADO_LABEL } from '../../data/estados'
 import { formatearPrecio, formatearFecha } from '../../utils/formato'
-import PlanoLotes from '../../components/PlanoLotes/PlanoLotes'
-import SolicitudForm from '../../components/SolicitudForm/SolicitudForm'
+import Modal from '../../components/Modal/Modal'
+import SolicitudInformacion from '../../components/SolicitudInformacion/SolicitudInformacion'
+import SolicitudCotizacion from '../../components/SolicitudCotizacion/SolicitudCotizacion'
+import AgendarVisita from '../../components/AgendarVisita/AgendarVisita'
+import PlanoInteractivo from '../../components/PlanoInteractivo/PlanoInteractivo'
+import { lotesMock } from '../../data/lotesMock'
+import planoChalayII from '../../assets/images/chalay2.jpg'
+import planoSanAgustinI from '../../assets/images/sanAgustin1.jpg'
+import planoSanAgustinII from '../../assets/images/sanAgustin2.jpg'
 
 const TODOS = 'TODOS'
 
 const FILTROS_INICIALES = { estado: TODOS, manzana: '', area: '', busqueda: '' }
+
+// Imagen del plano por proyecto (id de `data/proyectos.js`), usada solo en la vista Plano de esta
+// página. `proyecto.imagenPlano` sigue existiendo para el resto del sitio; estas son las imágenes
+// que coinciden en tamaño con el SVG interactivo de Chalay II (y se preparan del mismo modo para
+// San Agustín I/II cuando tengan su propio levantamiento).
+const PLANOS_POR_PROYECTO = {
+  1: planoChalayII,
+  2: planoSanAgustinI,
+  3: planoSanAgustinII,
+}
 
 function useQueryId() {
   const params = new URLSearchParams(window.location.search)
@@ -31,7 +48,8 @@ function Lotes() {
   const [vista, setVista] = useState('lista') // 'lista' | 'plano'
   const [filtros, setFiltros] = useState(FILTROS_INICIALES)
   const [loteSeleccionado, setLoteSeleccionado] = useState(null)
-  const [solicitud, setSolicitud] = useState(null) // 'informacion' | 'cotizacion' | null
+  // 'solicitud-informacion' | 'solicitud-cotizacion' | 'agendar-visita' | null
+  const [solicitudActiva, setSolicitudActiva] = useState(null)
 
   useEffect(() => {
     getProyectos().then(setProyectos).catch(() => {})
@@ -70,7 +88,7 @@ function Lotes() {
       if (String(id ?? '') === String(proyectoId ?? '')) return
 
       setLoteSeleccionado(null)
-      setSolicitud(null)
+      setSolicitudActiva(null)
       setFiltros(FILTROS_INICIALES)
       setError(null)
       setEstadoCarga('cargando')
@@ -83,6 +101,7 @@ function Lotes() {
 
   const seleccionarProyecto = (id) => {
     setLoteSeleccionado(null)
+    setSolicitudActiva(null)
     setFiltros(FILTROS_INICIALES)
     setEstadoCarga('cargando')
     setProyectoId(id)
@@ -91,11 +110,17 @@ function Lotes() {
 
   const cambiarFiltro = (campo, valor) => setFiltros((prev) => ({ ...prev, [campo]: valor }))
 
-  const cerrarDetalleLote = () => setLoteSeleccionado(null)
+  const cerrarDetalleLote = () => {
+    setSolicitudActiva(null)
+    setLoteSeleccionado(null)
+  }
+
+  // Cerrar un formulario (X, ESC, "Volver al lote") deja al usuario otra vez en el detalle del lote.
+  const cerrarSolicitud = () => setSolicitudActiva(null)
 
   // El simulador recibe solo el id del lote y vuelve a pedir sus datos por `services/api`.
   const irAlSimulador = (lote) => {
-    window.location.href = `/simulador-costos?lote=${lote.id}`
+    window.location.assign(`/simulador-costos?lote=${lote.id}`)
   }
 
   // Opciones de los filtros: salen de los lotes del proyecto elegido, nunca de otro proyecto.
@@ -128,7 +153,10 @@ function Lotes() {
     })
   }, [lotes, filtros])
 
-  const idsVisibles = useMemo(() => new Set(lotesFiltrados.map((l) => l.id)), [lotesFiltrados])
+  // El plano necesita datos incluso si la API todavía no responde con lotes reales (`lotes: []`
+  // es una respuesta válida). Mientras no exista PostgreSQL, cae a `lotesMock`; el día que la API
+  // ya devuelva lotes, este `useMemo` elige `lotes` sin que haya que tocar `PlanoInteractivo`.
+  const lotesParaPlano = useMemo(() => (lotes.length > 0 ? lotes : lotesMock), [lotes])
 
   return (
     <section id="lotes" className="lotes">
@@ -194,11 +222,13 @@ function Lotes() {
               </div>
             </div>
 
-            {lotes.length === 0 && <p className="lotes-subtitulo">Este proyecto todavía no tiene lotes registrados.</p>}
+            {vista === 'lista' && lotes.length === 0 && (
+              <p className="lotes-subtitulo">Este proyecto todavía no tiene lotes registrados.</p>
+            )}
 
-            {lotes.length > 0 && (
+            {vista === 'lista' && lotes.length > 0 && (
               <>
-                {/* Filtros: reutilizan el estilo del panel de Proyectos */}
+                {/* Filtros de la vista lista: reutilizan el estilo del panel de Proyectos */}
                 <div className="proyectos-panel lotes-filtros">
                   <div className="proyectos-filtros">
                     {[{ value: TODOS, label: 'Todos' }, ...ESTADOS_LOTE].map((e) => (
@@ -294,45 +324,47 @@ function Lotes() {
               </div>
             )}
 
-            {vista === 'plano' && lotes.length > 0 && (
-              <div className="plano-vista">
-                {proyecto.imagenPlano && (
-                  <a className="plano-imagen" href={proyecto.imagenPlano} target="_blank" rel="noreferrer">
-                    <img src={proyecto.imagenPlano} alt={`Plano de ${proyecto.nombre}`} />
-                    <span>Plano del proyecto · {formatearFecha(proyecto.planoFecha)} · clic para ampliar</span>
-                  </a>
-                )}
+            {vista === 'plano' && (() => {
+              const imagenPlano = PLANOS_POR_PROYECTO[proyecto.id] ?? proyecto.imagenPlano
+              if (!imagenPlano) return null
 
-                <PlanoLotes
-                  lotes={lotes}
-                  idsVisibles={idsVisibles}
-                  selectedLoteId={loteSeleccionado?.id}
-                  onSelectLote={setLoteSeleccionado}
-                />
-              </div>
-            )}
+              return (
+                <div className="plano-vista">
+                  <p className="plano-vista-info">
+                    Plano del proyecto · {formatearFecha(proyecto.planoFecha)}
+                  </p>
+
+                  <PlanoInteractivo
+                    proyectoId={proyecto.id}
+                    imagen={imagenPlano}
+                    nombreProyecto={proyecto.nombre}
+                    lotes={lotesParaPlano}
+                    seleccionadoId={loteSeleccionado?.id}
+                    onSeleccionarLote={setLoteSeleccionado}
+                  />
+                </div>
+              )
+            })()}
           </>
         )}
       </div>
 
-      {loteSeleccionado && (
-        <div className="lote-detalle-overlay" role="dialog" aria-modal="true" onClick={cerrarDetalleLote}>
-          <div className="lote-detalle-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="solicitud-cerrar" onClick={cerrarDetalleLote} aria-label="Cerrar">
-              <X size={18} />
-            </button>
+      {loteSeleccionado && (() => {
+        const esDisponible = loteSeleccionado.estado === 'DISPONIBLE'
 
+        return (
+          <Modal
+            titulo={loteSeleccionado.codigo}
+            descripcion={`${proyecto?.nombre ?? ''} · ${loteSeleccionado.manzana} · Lote ${numeroDeLote(loteSeleccionado)}`}
+            onCerrar={cerrarDetalleLote}
+            tamano="pequeno"
+          >
             <span
               className="lote-estado-badge lote-detalle-badge"
               style={{ background: ESTADO_COLOR[loteSeleccionado.estado] }}
             >
               {ESTADO_LABEL[loteSeleccionado.estado]}
             </span>
-
-            <h3>{loteSeleccionado.codigo}</h3>
-            <p className="lotes-subtitulo">
-              {loteSeleccionado.manzana} · Lote {numeroDeLote(loteSeleccionado)}
-            </p>
 
             <div className="lote-datos lote-detalle-datos">
               <div>
@@ -359,30 +391,70 @@ function Lotes() {
               </p>
             )}
 
-            <div className="detalle-proyecto-acciones">
-              <button className="btn-proyecto" onClick={() => irAlSimulador(loteSeleccionado)}>
-                Simular costo
+            {/* Tres caminos explicados en lenguaje sencillo: el visitante elige según lo que quiere hacer. */}
+            <h4 className="lote-detalle-pregunta">¿Qué quieres hacer?</h4>
+
+            <div className="lote-detalle-opciones">
+              <button className="lote-opcion" onClick={() => setSolicitudActiva('solicitud-informacion')}>
+                <MessageCircle size={20} aria-hidden="true" />
+                <span>
+                  <strong>Solicitar información</strong>
+                  <small>Quiero resolver mis dudas.</small>
+                </span>
+                <ChevronRight size={18} aria-hidden="true" />
               </button>
+
               <button
-                className="btn-proyecto"
-                disabled={loteSeleccionado.estado !== 'DISPONIBLE'}
-                title={loteSeleccionado.estado !== 'DISPONIBLE' ? 'Solo se puede cotizar un lote disponible' : undefined}
-                onClick={() => setSolicitud('cotizacion')}
+                className="lote-opcion"
+                disabled={!esDisponible}
+                onClick={() => setSolicitudActiva('solicitud-cotizacion')}
               >
-                Solicitar cotización
+                <FileText size={20} aria-hidden="true" />
+                <span>
+                  <strong>Solicitar cotización</strong>
+                  <small>
+                    {esDisponible ? 'Quiero conocer el precio.' : 'Solo se puede cotizar un lote disponible.'}
+                  </small>
+                </span>
+                <ChevronRight size={18} aria-hidden="true" />
               </button>
-              <button className="btn-detalles" onClick={() => setSolicitud('informacion')}>
-                Solicitar información
+
+              <button className="lote-opcion" onClick={() => setSolicitudActiva('agendar-visita')}>
+                <CalendarDays size={20} aria-hidden="true" />
+                <span>
+                  <strong>Agendar visita</strong>
+                  <small>Quiero conocer el proyecto.</small>
+                </span>
+                <ChevronRight size={18} aria-hidden="true" />
               </button>
             </div>
-          </div>
-        </div>
-      )}
 
-      <SolicitudForm
-        isOpen={Boolean(solicitud)}
-        onClose={() => setSolicitud(null)}
-        tipo={solicitud ?? 'informacion'}
+            <button className="lote-detalle-simular" onClick={() => irAlSimulador(loteSeleccionado)}>
+              <Calculator size={15} aria-hidden="true" /> Simular cuotas de este lote
+            </button>
+          </Modal>
+        )
+      })()}
+
+      <SolicitudInformacion
+        isOpen={solicitudActiva === 'solicitud-informacion'}
+        onClose={cerrarSolicitud}
+        proyecto={proyecto}
+        lote={loteSeleccionado}
+      />
+
+      <SolicitudCotizacion
+        isOpen={solicitudActiva === 'solicitud-cotizacion'}
+        onClose={cerrarSolicitud}
+        proyecto={proyecto}
+        lote={loteSeleccionado}
+      />
+
+      {/* "Volver al proyecto": tras agendar se cierra también el detalle del lote. */}
+      <AgendarVisita
+        isOpen={solicitudActiva === 'agendar-visita'}
+        onClose={cerrarSolicitud}
+        onVolver={cerrarDetalleLote}
         proyecto={proyecto}
         lote={loteSeleccionado}
       />

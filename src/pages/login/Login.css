@@ -72,3 +72,45 @@
   font-size: 12px;
   line-height: 1.5;
 }
+
+/* Selector Cliente / Asesor */
+
+.login-tipos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 4px;
+  border: 1px solid #414141;
+  border-radius: 9px;
+  background: #171717;
+}
+
+.login-tipo {
+  padding: 9px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #cfcfc6;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background 0.2s, color 0.2s;
+}
+
+.login-tipo:hover {
+  color: #f5c400;
+}
+
+.login-tipo.activo {
+  background: #f5c400;
+  color: #111;
+}
+
+.login-error {
+  color: #fb4e4e;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+}

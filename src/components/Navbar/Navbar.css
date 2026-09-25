@@ -7,46 +7,16 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
-
-  /* Fondo negro elegante en todas las páginas */
-  background: transparent;
-}
-/*Proyectos*/
-/* Degradado especial (más intenso) solamente en la página de proyectos */
-.pagina-proyectos .navbar {
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.823) 0%,
-    rgba(0, 0, 0, 0.75) 35%,
-    rgba(6, 6, 6, 0.35) 80%,
-    rgba(0, 0, 0, 0.001) 100%
-  );
+  z-index: var(--z-navbar);
+  background-color: #000000eb;
+    border-bottom: 2px solid rgb(147, 101, 10);
 }
 
 
-.navbar::before {
-  content: '';
 
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 120px;
-
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.85),
-    rgba(0, 0, 0, 0)
-  );
-
-  pointer-events: none;
-}
 
 .navbar-container {
   position: relative;
-  z-index: 10000;
   background-color: transparent;
   width: 100%;
   min-height: 70px;
@@ -179,10 +149,9 @@
 
   padding: 12px 20px;
 
-  border: none;
-  border-radius: 30px;
-
-  background: #000;
+  border: 2px solid #d4af37;
+  border-radius: 30px ;
+  background-color: transparent;
   color: #f5c400;
 
   font-family: 'Montserrat', sans-serif;

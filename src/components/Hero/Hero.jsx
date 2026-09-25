@@ -7,6 +7,7 @@ import {
 } from 'lucide-react'
 import tituloHero from '../../assets/images/Encuentra-titulo.png'
 import fondoLeon from '../../assets/images/fondo-leon.png'
+import LeonAnimado from '../LeonAnimado'
 
 function Hero() {
   return (
@@ -22,6 +23,8 @@ function Hero() {
         />
 
         <div className="hero-content">
+
+          <LeonAnimado width={140} height={140} />
 
           <div className="hero-title">
             <img

@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Dancing+Script:wght@600;700&family=DM+Sans:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&family=Raleway:wght@400;500;600;700;800;900&display=swap');
 
+/* Jerarquía de capas (z-index) del sitio. Solo compiten entre sí los elementos que están en el
+   mismo contexto de apilamiento: por eso las páginas NO deben crear uno (position + z-index) si
+   dentro tienen capas fijas, y los modales se montan en <body> con un portal (ver Modal.jsx).
+     contenido de la página ..... auto
+     navbar ..................... --z-navbar
+     modales (detalle de lote y formularios; los apilados suman +1) ... --z-modal */
+:root {
+  --z-navbar: 1000;
+  --z-modal: 5000;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -20,9 +31,9 @@ body {
   background: linear-gradient(
 90deg,
 rgba(0, 0, 0, 0.95) 0%,
-rgba(0, 0, 0, 0.596) 40%,
-rgba(94, 105, 12, 0.277) 60%,
-rgba(135, 119, 70, 0.434) 100%
+rgba(0, 0, 0, 0.596) 30%,
+rgba(255, 232, 27, 0.247) 60%,
+rgba(135, 119, 70, 0) 100%
 ),
     url('/fondo.png');
 
