@@ -48,6 +48,7 @@ export function NotaObligatorios() {
 /**
  * Opciones de selección única con aspecto de botón (más fáciles de tocar en móvil que un radio).
  * `permitirQuitar`: volver a tocar la opción elegida la deselecciona (para preguntas opcionales).
+ * Una opción con `deshabilitada: true` se muestra pero no se puede elegir (p. ej. un horario ocupado).
  */
 export function GrupoOpciones({ id, etiqueta, opciones, valor, onCambiar, error, permitirQuitar = false, className = '' }) {
   return (
@@ -69,6 +70,7 @@ export function GrupoOpciones({ id, etiqueta, opciones, valor, onCambiar, error,
             role="radio"
             aria-checked={elegida}
             className="solicitud-opcion"
+            disabled={opcion.deshabilitada}
             onClick={() => onCambiar(elegida && permitirQuitar ? '' : opcion.value)}
           >
             {opcion.label}

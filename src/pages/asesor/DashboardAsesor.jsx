@@ -13,7 +13,7 @@ function DashboardAsesor() {
   const encabezado = (
     <EncabezadoPagina
       titulo={`Hola, ${primerNombre(usuario.nombre)}`}
-      subtitulo="Resumen de tu cartera. Las cifras se calculan con datos de demostración y no son indicadores reales de la empresa."
+      subtitulo="Resumen de tu cartera, calculado con los datos de demostración guardados en este navegador. No son indicadores reales de la empresa."
     />
   )
 
@@ -35,7 +35,13 @@ function DashboardAsesor() {
       <div className="panel-rejilla">
         <Indicador icono={Users} etiqueta="Clientes asignados" valor={indicadores.clientes} a="/asesor/clientes" />
         <Indicador icono={ClipboardList} etiqueta="Solicitudes pendientes" valor={indicadores.solicitudesPendientes} a="/asesor/solicitudes" />
-        <Indicador icono={CalendarClock} etiqueta="Visitas programadas" valor={indicadores.visitasProgramadas} a="/asesor/agenda" />
+        <Indicador
+          icono={CalendarClock}
+          etiqueta="Visitas programadas"
+          valor={indicadores.visitasProgramadas}
+          detalle={`${indicadores.visitasPorConfirmar} por confirmar`}
+          a="/asesor/agenda"
+        />
         <Indicador icono={FileText} etiqueta="Cotizaciones" valor={indicadores.cotizaciones} />
         <Indicador icono={Handshake} etiqueta="Separaciones" valor={indicadores.separaciones} />
         <Indicador icono={BadgeCheck} etiqueta="Ventas" valor={indicadores.ventas} a="/asesor/seguimiento" />

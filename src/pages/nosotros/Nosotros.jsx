@@ -22,9 +22,10 @@ import {
 } from 'lucide-react'
 
 import './Nosotros.css'
-import leonN from '../../assets/images/leon-nosotros.png'
-import nosotros from '../../assets/images/nosotros-logo.png'
+import leonN from '../../assets/images/leon-nosotros.webp'
+import nosotros from '../../assets/images/nosotros-logo.webp'
 import { integrantes } from '../../data/equipo'
+import { esEnlacePendiente } from '../../utils/formato'
 
 const caracteristicas = [
   {
@@ -228,10 +229,11 @@ function EquipoPanel({
   const filas = DETALLES_PANEL.filter(
     (detalle) => textoDetalle(persona[detalle.clave])
   )
+  // Los enlaces de ejemplo (wa.me/51XXXX…, instagram.com/...) no se muestran: solo los reales.
   const redes = REDES_PANEL.filter(
-    (red) => persona.redes && persona.redes[red.clave]
+    (red) => !esEnlacePendiente(persona.redes?.[red.clave])
   )
-  const contacto = persona.contacto
+  const contacto = esEnlacePendiente(persona.contacto) ? null : persona.contacto
   const hayDetalle = filas.length > 0 || redes.length > 0 || Boolean(contacto)
 
   return (

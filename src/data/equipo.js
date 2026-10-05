@@ -1,11 +1,11 @@
 // EQUIPO DE GRUPO LEONES (datos mock). Lo muestra el carrusel de `pages/nosotros/Nosotros.jsx` y
 // lo reutiliza el perfil del asesor en el área interna (`pages/asesor/PerfilAsesor.jsx`), que lo
 // cruza por `id` con `./asesoresMock.js`. Es la única fuente de estos perfiles: no duplicarlos.
-import asVen1 from '../assets/images/asVentas1.png'
-import asVen2 from '../assets/images/asVentas2.png'
-import asVen3 from '../assets/images/asVentas3.png'
-import asVen4 from '../assets/images/asVentas4.png'
-import drCom from '../assets/images/drComercial.png'
+import asVen1 from '../assets/images/asVentas1.webp'
+import asVen2 from '../assets/images/asVentas2.webp'
+import asVen3 from '../assets/images/asVentas3.webp'
+import asVen4 from '../assets/images/asVentas4.webp'
+import drCom from '../assets/images/drComercial.webp'
 
 /*
   Datos del panel que aparece al pasar el mouse (o tocar) la tarjeta.

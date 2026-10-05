@@ -10,9 +10,8 @@ import SolicitudCotizacion from '../../components/SolicitudCotizacion/SolicitudC
 import AgendarVisita from '../../components/AgendarVisita/AgendarVisita'
 import PlanoInteractivo from '../../components/PlanoInteractivo/PlanoInteractivo'
 import { lotesMock } from '../../data/lotesMock'
-import planoChalayII from '../../assets/images/chalay2.jpg'
-import planoSanAgustinI from '../../assets/images/sanAgustin1.jpg'
-import planoSanAgustinII from '../../assets/images/sanAgustin2.jpg'
+import planoChalayII from '../../assets/images/chalay2.webp'
+import planoSanAgustinI from '../../assets/images/sanAgustin1.webp'
 
 const TODOS = 'TODOS'
 
@@ -25,7 +24,7 @@ const FILTROS_INICIALES = { estado: TODOS, manzana: '', area: '', busqueda: '' }
 const PLANOS_POR_PROYECTO = {
   1: planoChalayII,
   2: planoSanAgustinI,
-  3: planoSanAgustinII,
+  // San Agustín II (id 3) aún no tiene imagen propia aquí: usa `proyecto.imagenPlano` (su plano real).
 }
 
 function useQueryId() {
@@ -387,7 +386,9 @@ function Lotes() {
 
             {loteSeleccionado.estadoFecha && (
               <p className="lote-detalle-descripcion">
-                Estado según el plano comercial del {formatearFecha(loteSeleccionado.estadoFecha)}.
+                {loteSeleccionado.estadoFuente === 'separacion'
+                  ? `Lote separado el ${formatearFecha(loteSeleccionado.estadoFecha)}.`
+                  : `Estado según el plano comercial del ${formatearFecha(loteSeleccionado.estadoFecha)}.`}
               </p>
             )}
 

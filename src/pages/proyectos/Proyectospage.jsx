@@ -1,7 +1,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import './Proyectospage.css'
-import proyecto from '../../assets/images/E-terreno.png'
+import proyecto from '../../assets/images/E-terreno.webp'
 import {
   MapPin,
   Grid2X2,

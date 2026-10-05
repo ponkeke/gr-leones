@@ -3,12 +3,15 @@ import { CheckCheck } from 'lucide-react'
 import { useAreaInterna } from '../../components/areaInterna/contexto'
 import { useDatos } from '../../components/areaInterna/useDatos'
 import { EncabezadoPagina, EstadoCarga, Vacio } from '../../components/areaInterna/Partes'
-import { getNotificacionesDeCliente } from '../../services/api'
+import { getNotificaciones, marcarNotificacionesLeidas } from '../../services/api'
 import { formatearFecha } from '../../utils/formato'
 
+// La usan el área del cliente y la del asesor: siempre muestra las del usuario en sesión.
 function Notificaciones() {
   const { usuario } = useAreaInterna()
-  const { datos, estado, error } = useDatos(`notificaciones-cliente-${usuario.id}`, () => getNotificacionesDeCliente(usuario.id))
+  const { datos, estado, error } = useDatos(`notificaciones-${usuario.tipo}-${usuario.id}`, () =>
+    getNotificaciones(usuario.tipo, usuario.id),
+  )
 
   if (estado !== 'listo') {
     return (
@@ -21,12 +24,26 @@ function Notificaciones() {
   return <ListaNotificaciones inicial={datos} />
 }
 
-// "Marcar como leídas" solo cambia el estado local de esta pantalla (no hay backend).
+// "Marcar como leídas" se guarda en el almacén mock (`services/api.js`).
 function ListaNotificaciones({ inicial }) {
+  const { refrescarNotificaciones } = useAreaInterna()
   const [notificaciones, setNotificaciones] = useState(inicial)
+  const [guardando, setGuardando] = useState(false)
+  const [errorGuardado, setErrorGuardado] = useState(null)
   const sinLeer = notificaciones.filter((n) => !n.leida).length
 
-  const marcarTodas = () => setNotificaciones((lista) => lista.map((n) => ({ ...n, leida: true })))
+  const marcarTodas = async () => {
+    setGuardando(true)
+    setErrorGuardado(null)
+    try {
+      setNotificaciones(await marcarNotificacionesLeidas(notificaciones.filter((n) => !n.leida).map((n) => n.id)))
+      refrescarNotificaciones()
+    } catch (e) {
+      setErrorGuardado(e.message)
+    } finally {
+      setGuardando(false)
+    }
+  }
 
   return (
     <>
@@ -35,11 +52,13 @@ function ListaNotificaciones({ inicial }) {
         subtitulo={sinLeer ? `Tienes ${sinLeer} ${sinLeer === 1 ? 'notificación sin leer' : 'notificaciones sin leer'}.` : 'Estás al día.'}
       >
         {sinLeer > 0 && (
-          <button type="button" className="panel-boton-secundario" onClick={marcarTodas}>
-            <CheckCheck size={15} aria-hidden="true" /> Marcar todas como leídas
+          <button type="button" className="panel-boton-secundario" onClick={marcarTodas} disabled={guardando}>
+            <CheckCheck size={15} aria-hidden="true" /> {guardando ? 'Guardando…' : 'Marcar todas como leídas'}
           </button>
         )}
       </EncabezadoPagina>
+
+      {errorGuardado && <p className="panel-error" role="alert">{errorGuardado}</p>}
 
       {notificaciones.length === 0 ? (
         <Vacio texto="No tienes notificaciones." />
@@ -53,7 +72,7 @@ function ListaNotificaciones({ inicial }) {
                   {n.titulo}
                   {!n.leida && <span className="panel-oculto"> (sin leer)</span>}
                 </p>
-                <p className="panel-linea-detalle">{n.texto}</p>
+                <p className="panel-linea-detalle">{n.mensaje}</p>
                 <p className="panel-texto-secundario">{formatearFecha(n.fecha)}</p>
               </div>
             </li>

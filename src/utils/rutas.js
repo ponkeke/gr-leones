@@ -11,7 +11,7 @@ export function normalizarRuta(pathname) {
   return sinBarraFinal
 }
 
-/** Rutas del área interna (cliente / asesor): App.jsx monta `AreaInterna` en lugar del sitio público. */
+/** Rutas del área interna (cliente / asesor / admin): App.jsx monta `AreaInterna` en lugar del sitio público. */
 export function esRutaInterna(ruta) {
-  return /^\/(cliente|asesor)(\/|$)/.test(ruta)
+  return /^\/(cliente|asesor|admin)(\/|$)/.test(ruta)
 }

@@ -157,3 +157,34 @@ export function Dato({ etiqueta, children }) {
     </div>
   )
 }
+
+/**
+ * Distribución de una cantidad por categorías, con barras proporcionales (reportes de admin).
+ * `items`: [{ value, label, cantidad }]. Muestra el % sobre `total` (por defecto, la suma).
+ */
+export function Distribucion({ titulo, items, total = items.reduce((suma, i) => suma + i.cantidad, 0), vacio = 'Sin datos todavía.' }) {
+  const maximo = Math.max(...items.map((i) => i.cantidad), 1)
+  return (
+    <section className="panel-tarjeta">
+      {titulo && <h3 className="panel-seccion-titulo">{titulo}</h3>}
+      {total === 0 ? (
+        <p className="panel-texto-secundario">{vacio}</p>
+      ) : (
+        <ul className="panel-distribucion">
+          {items.map((item) => (
+            <li key={item.value} className="panel-distribucion-fila">
+              <span className="panel-distribucion-etiqueta">{item.label}</span>
+              <span className="panel-distribucion-barra" aria-hidden="true">
+                <span style={{ width: `${(item.cantidad / maximo) * 100}%` }} />
+              </span>
+              <span className="panel-distribucion-valor">
+                {item.cantidad}
+                <small>{Math.round((item.cantidad / total) * 100)}%</small>
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  )
+}

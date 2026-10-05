@@ -6,6 +6,8 @@ import { createContext, useContext } from 'react'
 //   navegar(destino) .. cambia de página sin recargar
 //   refrescarSesion() . vuelve a leer la sesión (tras editar el perfil)
 //   salir() ........... cierra la sesión y vuelve a /login
+//   noLeidas .......... cantidad de notificaciones sin leer (badge)
+//   refrescarNotificaciones() vuelve a contar las sin leer (tras marcarlas como leídas)
 export const AreaInternaContext = createContext(null)
 
 export function useAreaInterna() {

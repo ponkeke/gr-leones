@@ -1,64 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './comunicados.css'
-import terreno1 from '../../assets/images/terreno1.png'
-import novedades from '../../assets/images/novedades-titulo.png'
-import leoncom from '../../assets/images/leon-comunicados.png'
-import leonbusc from '../../assets/images/leon-buscando.png'
+import novedades from '../../assets/images/novedades-titulo.webp'
+import leoncom from '../../assets/images/leon-comunicados.webp'
+import leonbusc from '../../assets/images/leon-buscando.webp'
 
 import { MapPin } from 'lucide-react'
+import { getComunicados } from '../../services/api'
 
-// PENDIENTE: los comunicados todavía no tienen contenido completo ni página propia. Cuando
-// existan, agregar a cada objeto un campo `enlace` (ruta o URL): "Leer más" lo abrirá solo.
-const comunicados = [
-  {
-    categoria: 'Novedad',
-    fecha: '07 SEP 2026',
-    titulo: 'NUEVA ETAPA DE NUESTRO PROYECTO VELAMAR',
-    descripcion:
-      'Conoce la información y novedades de nuestros proyectos inmobiliarios.',
-    imagen: terreno1,
-  },
-  {
-    categoria: 'Evento',
-    fecha: '03 SEP 2026',
-    titulo: 'FERIA INMOBILIARIA LEONES 2026',
-    descripcion:
-      'Participa en nuestros eventos y conoce las nuevas oportunidades inmobiliarias.',
-    imagen: terreno1,
-  },
-  {
-    categoria: 'Avance de obra',
-    fecha: '28 AGO 2026',
-    titulo: 'AVANCE DE OBRAS – VELAMAR',
-    descripcion:
-      'Conoce el avance de las obras y el desarrollo de nuestros proyectos.',
-    imagen: terreno1,
-  },
-  {
-    categoria: 'Consejos',
-    fecha: '20 AGO 2026',
-    titulo: '¿POR QUÉ INVERTIR EN TERRENOS?',
-    descripcion:
-      'Descubre las ventajas de invertir en terrenos para tu futuro.',
-    imagen: terreno1,
-  },
-  {
-    categoria: 'Importante',
-    fecha: '12 AGO 2026',
-    titulo: 'NUEVAS OPCIONES DE FINANCIAMIENTO',
-    descripcion:
-      'Conoce nuestras alternativas y facilidades para adquirir tu terreno.',
-    imagen: terreno1,
-  },
-  {
-    categoria: 'Evento',
-    fecha: '05 AGO 2026',
-    titulo: 'VISÍTANOS EN NUESTRA OFICINA',
-    descripcion:
-      'Nuestro equipo está listo para brindarte toda la información que necesitas.',
-    imagen: terreno1,
-  },
-]
+// Los comunicados llegan de `getComunicados()` (services/api.js). La empresa todavía no redactó
+// comunicados propios: por ahora solo se publican hechos que ya están en los datos de cada
+// proyecto (plano comercial y avance). Cada uno trae `enlace`: "Leer más" lo abre. Una página de
+// detalle propia queda para cuando exista contenido completo.
 
 // Cada botón de filtro y la categoría que muestra (`null` = todas).
 const FILTROS = [
@@ -70,12 +22,12 @@ const FILTROS = [
   { etiqueta: 'Importante', categoria: 'Importante' },
 ]
 
-const MESES = { ENE: 0, FEB: 1, MAR: 2, ABR: 3, MAY: 4, JUN: 5, JUL: 6, AGO: 7, SEP: 8, OCT: 9, NOV: 10, DIC: 11 }
+const MESES = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC']
 
-// "07 SEP 2026" -> marca de tiempo, para poder ordenar por fecha.
-function fechaComoNumero(texto) {
-  const [dia, mes, anio] = texto.split(' ')
-  return new Date(Number(anio), MESES[mes] ?? 0, Number(dia)).getTime()
+// "2026-09-07" -> "07 SEP 2026" (el formato que ya usaba la tarjeta).
+function fechaComunicado(iso) {
+  const [anio, mes, dia] = iso.split('-')
+  return `${dia} ${MESES[Number(mes) - 1]} ${anio}`
 }
 
 // Para buscar sin distinguir mayúsculas ni tildes.
@@ -88,9 +40,27 @@ function normalizar(texto) {
 const URL_CALENDARIO = null
 
 function Comunicados() {
+  const [comunicados, setComunicados] = useState([])
+  const [estadoCarga, setEstadoCarga] = useState('cargando') // 'cargando' | 'listo' | 'error'
   const [filtroActivo, setFiltroActivo] = useState(FILTROS[0].etiqueta)
   const [busqueda, setBusqueda] = useState('')
   const [masRecientesPrimero, setMasRecientesPrimero] = useState(true)
+
+  useEffect(() => {
+    let cancelado = false
+    getComunicados()
+      .then((datos) => {
+        if (cancelado) return
+        setComunicados(datos)
+        setEstadoCarga('listo')
+      })
+      .catch(() => {
+        if (!cancelado) setEstadoCarga('error')
+      })
+    return () => {
+      cancelado = true
+    }
+  }, [])
 
   const categoriaActiva = FILTROS.find((filtro) => filtro.etiqueta === filtroActivo).categoria
   const texto = normalizar(busqueda.trim())
@@ -102,7 +72,7 @@ function Comunicados() {
         !texto || normalizar(`${comunicado.titulo} ${comunicado.descripcion}`).includes(texto),
     )
     .sort((a, b) => {
-      const diferencia = fechaComoNumero(b.fecha) - fechaComoNumero(a.fecha)
+      const diferencia = b.fecha.localeCompare(a.fecha)
       return masRecientesPrimero ? diferencia : -diferencia
     })
 
@@ -182,7 +152,7 @@ function Comunicados() {
               onClick={() => setMasRecientesPrimero((valor) => !valor)}
             >
               ☷ &nbsp; Ordenar por:
-              <span>{masRecientesPrimero ? 'Más recientes' : 'Más antiguos'}⌄</span>
+              <span>{masRecientesPrimero ? 'Más recientes' : 'Más antiguos'} ▼ </span>
             </button>
           </div>
 
@@ -190,7 +160,7 @@ function Comunicados() {
             {comunicadosVisibles.map((comunicado) => (
               <article
                 className="comunicado-card"
-                key={`${comunicado.fecha}-${comunicado.titulo}`}
+                key={comunicado.id}
               >
                 <div className="comunicado-imagen">
                   <img
@@ -215,7 +185,7 @@ function Comunicados() {
 
                 <div className="comunicado-contenido">
                   <span className="comunicado-fecha">
-                    ▣ &nbsp; {comunicado.fecha}
+                    ▣ &nbsp; {fechaComunicado(comunicado.fecha)}
                   </span>
 
                   <h3>{comunicado.titulo}</h3>
@@ -234,7 +204,11 @@ function Comunicados() {
             ))}
           </div>
 
-          {comunicadosVisibles.length === 0 && (
+          {estadoCarga === 'cargando' && <p className="lotes-subtitulo">Cargando comunicados…</p>}
+          {estadoCarga === 'error' && (
+            <p className="lotes-subtitulo">No pudimos cargar los comunicados. Intenta nuevamente.</p>
+          )}
+          {estadoCarga === 'listo' && comunicadosVisibles.length === 0 && (
             <p className="lotes-subtitulo">No hay comunicados que coincidan con tu búsqueda.</p>
           )}
         </div>
@@ -253,7 +227,13 @@ function Comunicados() {
             <p>Conoce ferias, lanzamientos y más.</p>
           </div>
 
-          <button className="banner-button" type="button" onClick={verCalendario}>
+          <button
+            className="banner-button"
+            type="button"
+            onClick={verCalendario}
+            disabled={!URL_CALENDARIO}
+            title={URL_CALENDARIO ? undefined : 'Calendario de eventos por confirmar'}
+          >
             Ver calendario →
           </button>
 

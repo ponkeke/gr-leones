@@ -4,7 +4,7 @@ import { useAreaInterna } from '../../components/areaInterna/contexto'
 import { useDatos } from '../../components/areaInterna/useDatos'
 import { Dato, EncabezadoPagina, EstadoCarga } from '../../components/areaInterna/Partes'
 import { actualizarPerfilCliente, getCliente } from '../../services/api'
-import { actualizarSesion } from '../../utils/authMock'
+import { actualizarSesion } from '../../services/sesion'
 
 function PerfilCliente() {
   const { usuario } = useAreaInterna()

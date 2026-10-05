@@ -1,0 +1,231 @@
+/* =========================================
+   CALENDARIO (disponibilidad del asesor y "Agendar visita")
+   Misma paleta que los formularios: fondo #171717, bordes #414141, dorado #f5c400.
+========================================= */
+
+.calendario {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 420px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.calendario-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.calendario-mes {
+  color: #edeee4;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.calendario-flecha {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #414141;
+  border-radius: 8px;
+  background: #171717;
+  color: #f5c400;
+  cursor: pointer;
+}
+
+.calendario-flecha:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.calendario-flecha:not(:disabled):hover {
+  border-color: rgba(245, 196, 0, 0.6);
+}
+
+.calendario-rejilla {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+  border-radius: 10px;
+  outline: none;
+}
+
+.calendario-rejilla[aria-invalid='true'] {
+  padding: 6px;
+  border: 1px solid #ff6b6b;
+}
+
+.calendario-dia-semana {
+  padding: 4px 0;
+  color: #8a8a8a;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.calendario-dia {
+  position: relative;
+  min-height: 40px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background: #171717;
+  color: #d6d6d6;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.calendario-dia:disabled {
+  border-color: transparent;
+  background: transparent;
+  color: #555;
+  cursor: not-allowed;
+}
+
+.calendario-dia:not(:disabled):hover {
+  border-color: rgba(245, 196, 0, 0.6);
+}
+
+.calendario-dia:focus-visible {
+  outline: 2px solid #f5c400;
+  outline-offset: 2px;
+}
+
+/* Día con horario (semanal): borde y número dorados. */
+.calendario-dia-disponible {
+  border-color: rgba(245, 196, 0, 0.55);
+  color: #f5c400;
+}
+
+/* Día con horario especial solo para esa fecha. */
+.calendario-dia-especial {
+  border-color: #f5c400;
+  border-style: dashed;
+  color: #f5c400;
+}
+
+/* Día marcado como no disponible. */
+.calendario-dia-bloqueado {
+  border-color: rgba(251, 78, 78, 0.45);
+  color: #fb7b7b;
+  text-decoration: line-through;
+}
+
+/* Agendar visita: día que se puede elegir (con horarios libres). Resalta sobre los demás. */
+.calendario-dia-disponible:not(:disabled) {
+  background: rgba(245, 196, 0, 0.1);
+}
+
+/* Día en el rango pero sin horarios (asesor: sin horario configurado; cliente: sin cupos). */
+.calendario-dia-sin-horario,
+.calendario-dia-sin-disponibilidad {
+  border-color: #2b2b2b;
+  color: #6f6f6f;
+}
+
+.calendario-dia-sin-disponibilidad:disabled {
+  border: 1px dashed #333;
+  background: transparent;
+  color: #5c5c5c;
+}
+
+/* Día pasado o fuera del rango agendable: apenas visible. */
+.calendario-dia-fuera,
+.calendario-dia-fuera:disabled {
+  border-color: transparent;
+  background: transparent;
+  color: #3f3f3f;
+}
+
+/* Punto bajo el número (p. ej. días con visitas agendadas). */
+.calendario-dia-marca::after {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #6dc560;
+  content: '';
+  transform: translateX(-50%);
+}
+
+.calendario-dia.elegida,
+.calendario-dia.elegida:hover {
+  border-color: #f5c400;
+  border-style: solid;
+  background: #f5c400;
+  color: #111;
+  text-decoration: none;
+  box-shadow: 0 0 0 2px rgba(245, 196, 0, 0.35);
+}
+
+.calendario-dia.elegida.calendario-dia-marca::after {
+  background: #111;
+}
+
+.calendario-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  color: #a8a8a8;
+  font-family: 'Raleway', sans-serif;
+  font-size: 11.5px;
+}
+
+.calendario-leyenda-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.calendario-muestra {
+  position: relative;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 1px solid;
+  border-radius: 4px;
+}
+
+/* Muestras que solo existen en la leyenda. */
+.calendario-muestra.calendario-dia-sin-disponibilidad {
+  border: 1px dashed #5c5c5c;
+}
+
+.calendario-muestra.calendario-dia-sin-horario {
+  border-color: #5c5c5c;
+}
+
+.calendario-muestra.calendario-dia-seleccionado {
+  border-color: #f5c400;
+  background: #f5c400;
+}
+
+.calendario-muestra.calendario-dia-marca {
+  border-color: #414141;
+}
+
+.calendario-muestra.calendario-dia-marca::after {
+  bottom: 3px;
+  width: 4px;
+  height: 4px;
+}
+
+@media (max-width: 600px) {
+  .calendario {
+    max-width: none;
+  }
+
+  .calendario-dia {
+    min-height: 38px;
+  }
+}

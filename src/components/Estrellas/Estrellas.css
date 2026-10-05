@@ -1,0 +1,46 @@
+/* Puntuación con estrellas (testimonios): dorado del sitio sobre fondo oscuro. */
+.estrellas {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.estrella-llena {
+  color: #f5c400;
+  fill: #f5c400;
+}
+
+.estrella-vacia {
+  color: #5c5c5c;
+  fill: transparent;
+}
+
+.estrellas-seleccion {
+  gap: 4px;
+  padding: 4px;
+  border-radius: 10px;
+}
+
+.estrellas-seleccion[aria-invalid='true'] {
+  border: 1px solid #ff6b6b;
+}
+
+.estrella-boton {
+  display: grid;
+  place-items: center;
+  padding: 4px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.estrella-boton:hover {
+  transform: scale(1.1);
+}
+
+.estrella-boton:focus-visible {
+  outline: 2px solid #f5c400;
+  outline-offset: 2px;
+}

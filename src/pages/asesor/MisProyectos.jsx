@@ -1,9 +1,10 @@
 import { useAreaInterna } from '../../components/areaInterna/contexto'
 import { useDatos } from '../../components/areaInterna/useDatos'
-import { Dato, EncabezadoPagina, EstadoCarga, InsigniaLote, Tabla } from '../../components/areaInterna/Partes'
+import { Dato, EncabezadoPagina, EstadoCarga, Insignia, InsigniaLote, Tabla } from '../../components/areaInterna/Partes'
 import { textoLote, textoProyecto } from '../../components/areaInterna/formatoPanel'
 import { getCarteraDeAsesor, getProyectos } from '../../services/api'
 import { formatearPrecio } from '../../utils/formato'
+import { RELACIONES_LOTE, buscarEstado } from '../../data/procesoComercial'
 
 async function cargar(asesorId) {
   const [proyectos, cartera] = await Promise.all([getProyectos(), getCarteraDeAsesor(asesorId)])
@@ -19,8 +20,10 @@ const COLUMNAS_LOTES = [
   { titulo: 'Lote', render: textoLote },
   { titulo: 'Área', render: (f) => (f.lote ? `${f.lote.area_m2} m²` : '—') },
   { titulo: 'Precio', render: (f) => formatearPrecio(f.lote?.precio_total) },
-  { titulo: 'Estado', render: (f) => <InsigniaLote estado={f.lote?.estado} /> },
-  { titulo: 'Cliente interesado', render: (f) => f.cliente?.nombre ?? '—' },
+  { titulo: 'Disponibilidad', render: (f) => <InsigniaLote estado={f.lote?.estado} /> },
+  // La separación la registra administración; el asesor solo la ve.
+  { titulo: 'Relación', render: (f) => <Insignia estado={buscarEstado(RELACIONES_LOTE, f.relacion)} /> },
+  { titulo: 'Cliente', render: (f) => f.cliente?.nombre ?? '—' },
 ]
 
 function MisProyectos() {
@@ -55,7 +58,7 @@ function MisProyectos() {
           </div>
 
           <section className="panel-seccion">
-            <h2 className="panel-seccion-titulo">Lotes de interés de mis clientes</h2>
+            <h2 className="panel-seccion-titulo">Lotes de mis clientes (de interés o separados)</h2>
             <Tabla columnas={COLUMNAS_LOTES} filas={datos.lotesConInteres} vacio="Tus clientes aún no registran lotes de interés." />
           </section>
         </>

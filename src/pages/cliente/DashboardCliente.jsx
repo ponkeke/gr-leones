@@ -13,7 +13,9 @@ function DashboardCliente() {
 
   if (estado !== 'listo') return <EstadoCarga estado={estado} error={error} />
 
-  const { cliente, asesor, lotes, totalSolicitudes, solicitudesAbiertas, proximaVisita } = datos
+  const { cliente, asesor, totalSolicitudes, solicitudesAbiertas, proximaVisita } = datos
+  // Solo los de interés: consultar un lote no lo separa (ver RELACIONES_LOTE).
+  const lotes = datos.lotes.filter((f) => f.relacion === 'INTERES')
   const etapa = buscarEstado(ETAPAS_CLIENTE, datos.etapa)
   const pasoActual = PASOS_CLIENTE[etapa.pasosCliente] ?? 'Compra completada'
 
@@ -29,7 +31,7 @@ function DashboardCliente() {
           icono={MapPinned}
           etiqueta="Lotes de interés"
           valor={lotes.length}
-          detalle={lotes[0] ? `${textoProyecto(lotes[0])} · ${textoLote(lotes[0])}` : 'Aún no tienes lotes registrados'}
+          detalle={lotes[0] ? `${textoProyecto(lotes[0])} · ${textoLote(lotes[0])}` : 'Aún no consultaste ningún lote'}
           a="/cliente/lotes"
         />
         <Indicador
@@ -50,7 +52,7 @@ function DashboardCliente() {
           }
           a="/cliente/visitas"
         />
-        <Indicador icono={TrendingUp} etiqueta="Estado del proceso" valor={pasoActual}
+        <Indicador icono={TrendingUp} etiqueta="Próximo paso" valor={pasoActual}
           detalle={`${etapa.pasosCliente} de ${PASOS_CLIENTE.length} pasos completados`}
         />
       </div>

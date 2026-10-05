@@ -3,10 +3,10 @@ import { PhoneCall, RefreshCw, StickyNote } from 'lucide-react'
 import { useAreaInterna } from '../../components/areaInterna/contexto'
 import { useDatos } from '../../components/areaInterna/useDatos'
 import { EncabezadoPagina, EstadoCarga, Insignia, Pasos, Vacio } from '../../components/areaInterna/Partes'
-import { textoLote, textoProyecto } from '../../components/areaInterna/formatoPanel'
-import { getCarteraDeAsesor } from '../../services/api'
+import { textoLoteConRelacion, textoProyecto } from '../../components/areaInterna/formatoPanel'
+import { actualizarSeguimiento, getCarteraDeAsesor } from '../../services/api'
 import { ETAPAS_CLIENTE, PASOS_ASESOR, buscarEstado } from '../../data/procesoComercial'
-import { fechaLocalISO, formatearFecha } from '../../utils/formato'
+import { formatearFecha } from '../../utils/formato'
 
 function Seguimiento() {
   const { usuario } = useAreaInterna()
@@ -16,7 +16,7 @@ function Seguimiento() {
     <>
       <EncabezadoPagina
         titulo="Seguimiento comercial"
-        subtitulo="El avance de cada cliente. Los cambios son de demostración: se pierden al salir de esta página."
+        subtitulo="El avance de cada cliente. Los cambios se guardan en este navegador (demostración) y se reflejan en el área del cliente."
       />
       {estado === 'listo' ? <ListaSeguimiento inicial={datos} /> : <EstadoCarga estado={estado} error={error} />}
     </>
@@ -33,8 +33,8 @@ function ListaSeguimiento({ inicial }) {
     document.getElementById(`seguimiento-cliente-${clienteDestacado}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [clienteDestacado])
 
-  const actualizar = (id, cambio) =>
-    setCartera((lista) => lista.map((registro) => (registro.id === id ? { ...registro, ...cambio(registro) } : registro)))
+  const reemplazar = (actualizado) =>
+    setCartera((lista) => lista.map((registro) => (registro.id === actualizado.id ? actualizado : registro)))
 
   if (cartera.length === 0) return <Vacio texto="No tienes clientes asignados." />
 
@@ -45,17 +45,19 @@ function ListaSeguimiento({ inicial }) {
           key={registro.id}
           registro={registro}
           destacado={String(registro.clienteId) === clienteDestacado}
-          onActualizar={(cambio) => actualizar(registro.id, cambio)}
+          onActualizado={reemplazar}
         />
       ))}
     </div>
   )
 }
 
-function TarjetaSeguimiento({ registro, destacado, onActualizar }) {
+function TarjetaSeguimiento({ registro, destacado, onActualizado }) {
   const [formulario, setFormulario] = useState(null) // null | 'contacto' | 'nota' | 'estado'
   const [texto, setTexto] = useState('')
   const [nuevaEtapa, setNuevaEtapa] = useState(registro.etapa)
+  const [guardando, setGuardando] = useState(false)
+  const [errorGuardado, setErrorGuardado] = useState(null)
 
   const etapa = buscarEstado(ETAPAS_CLIENTE, registro.etapa)
   const lotePrincipal = registro.lotes[0]
@@ -64,32 +66,36 @@ function TarjetaSeguimiento({ registro, destacado, onActualizar }) {
     setFormulario((actual) => (actual === tipo ? null : tipo))
     setTexto('')
     setNuevaEtapa(registro.etapa)
+    setErrorGuardado(null)
   }
 
-  const agregarNota = (tipo, contenido) => {
-    const hoy = fechaLocalISO()
-    onActualizar((r) => ({
-      notas: [...r.notas, { fecha: hoy, tipo, texto: contenido }],
-      ultimaInteraccion: tipo === 'CONTACTO' ? hoy : r.ultimaInteraccion,
-    }))
+  // Cada formulario se traduce a un cambio de `actualizarSeguimiento` (se guarda en el almacén mock).
+  const cambioDelFormulario = () => {
+    if (formulario === 'contacto') return { nota: { tipo: 'CONTACTO', texto: texto.trim() || 'Contacto registrado.' } }
+    if (formulario === 'nota') return texto.trim() ? { nota: { tipo: 'NOTA', texto: texto.trim() } } : null
+    if (formulario === 'estado' && nuevaEtapa !== registro.etapa) return { etapa: nuevaEtapa }
+    return null
   }
 
-  const enviar = (evento) => {
+  const enviar = async (evento) => {
     evento.preventDefault()
-    if (formulario === 'contacto') {
-      agregarNota('CONTACTO', texto.trim() || 'Contacto registrado.')
-    } else if (formulario === 'nota') {
-      if (!texto.trim()) return
-      agregarNota('NOTA', texto.trim())
-    } else if (formulario === 'estado' && nuevaEtapa !== registro.etapa) {
-      const etiqueta = buscarEstado(ETAPAS_CLIENTE, nuevaEtapa).label
-      onActualizar((r) => ({
-        etapa: nuevaEtapa,
-        notas: [...r.notas, { fecha: fechaLocalISO(), tipo: 'ESTADO', texto: `Estado actualizado a "${etiqueta}".` }],
-      }))
+    const cambio = cambioDelFormulario()
+    if (!cambio) {
+      if (formulario !== 'nota') setFormulario(null)
+      return
     }
-    setFormulario(null)
-    setTexto('')
+
+    setGuardando(true)
+    setErrorGuardado(null)
+    try {
+      onActualizado(await actualizarSeguimiento(registro.id, cambio))
+      setFormulario(null)
+      setTexto('')
+    } catch (e) {
+      setErrorGuardado(e.message)
+    } finally {
+      setGuardando(false)
+    }
   }
 
   return (
@@ -109,7 +115,7 @@ function TarjetaSeguimiento({ registro, destacado, onActualizar }) {
           </div>
           <div className="panel-dato">
             <dt>Lote</dt>
-            <dd>{registro.lotes.length ? registro.lotes.map(textoLote).join(', ') : '—'}</dd>
+            <dd>{registro.lotes.length ? registro.lotes.map(textoLoteConRelacion).join(', ') : '—'}</dd>
           </div>
           <div className="panel-dato">
             <dt>Estado</dt>
@@ -155,9 +161,10 @@ function TarjetaSeguimiento({ registro, destacado, onActualizar }) {
               />
             </label>
           )}
+          {errorGuardado && <p className="panel-error" role="alert">{errorGuardado}</p>}
           <div className="panel-formulario-acciones">
-            <button type="submit" className="btn-buscar panel-boton">Guardar</button>
-            <button type="button" className="panel-boton-secundario" onClick={() => setFormulario(null)}>Cancelar</button>
+            <button type="submit" className="btn-buscar panel-boton" disabled={guardando}>{guardando ? 'Guardando…' : 'Guardar'}</button>
+            <button type="button" className="panel-boton-secundario" onClick={() => setFormulario(null)} disabled={guardando}>Cancelar</button>
           </div>
         </form>
       )}
@@ -187,6 +194,10 @@ const TITULO_NOTA = {
   CONTACTO: 'Contacto registrado',
   NOTA: 'Nota',
   ESTADO: 'Cambio de estado',
+  // Las registra administración (reasignación y separación de lotes).
+  ALTA: 'Alta como cliente',
+  ASIGNACION: 'Cambio de asesor',
+  SEPARACION: 'Separación registrada',
 }
 
 export default Seguimiento

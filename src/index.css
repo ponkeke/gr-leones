@@ -72,7 +72,12 @@ main,
 .pagina-lotes,
 .pagina-comunicados,
 .pagina-nosotros,
-.pagina-promociones {
+.pagina-promociones,
+.pagina-testimonios,
+.pagina-inversionistas,
+.pagina-preguntas-frecuentes,
+.pagina-reconocimientos,
+.pagina-galeria {
   background: transparent;
 }
 

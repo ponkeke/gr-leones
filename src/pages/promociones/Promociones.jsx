@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   MapPin,
   Tag,
@@ -13,8 +13,10 @@ import {
 } from 'lucide-react'
 
 import './Promociones.css'
-import promo from '../../assets/images/promo-logo.png'
-import leonpromo from '../../assets/images/leon-promo.png'
+import promo from '../../assets/images/promo-logo.webp'
+import leonpromo from '../../assets/images/leon-promo.webp'
+import { getProyectos } from '../../services/api'
+import { etiquetaDisponibilidad, formatearPrecio } from '../../utils/formato'
 
 // TODO: reemplazar por la fotografía real del asesor / tarjeta lateral.
 // Colocar el archivo en: public/images/promociones/asesor.png
@@ -42,20 +44,6 @@ const beneficios = [
 const OPCION_UBICACION_DEFECTO = 'Todas las ubicaciones'
 const OPCION_TIPO_DEFECTO = 'Todos los tipos'
 
-const ubicacionesFiltro = [
-  OPCION_UBICACION_DEFECTO,
-  'Huancayo',
-  'Chilca',
-  'El Tambo',
-]
-
-const tiposFiltro = [
-  OPCION_TIPO_DEFECTO,
-  'Lote',
-  'Casa',
-  'Departamento',
-]
-
 const rangosPrecio = [
   { etiqueta: 'Cualquier precio', min: 0, max: Infinity },
   { etiqueta: 'Hasta S/ 100,000', min: 0, max: 100000 },
@@ -63,52 +51,32 @@ const rangosPrecio = [
   { etiqueta: 'Más de S/ 200,000', min: 200000, max: Infinity },
 ]
 
-// Datos locales de ejemplo. Cuando exista la API de proyectos,
-// este arreglo puede reemplazarse por el resultado del fetch
-// manteniendo la misma forma de objeto (id, nombre, ubicacion, etc).
-const promociones = [
-  {
-    id: 'residencial-valle-sur',
-    nombre: 'Residencial Valle Sur',
-    ubicacion: 'Huancayo, Junín',
-    ciudad: 'Huancayo',
-    tipo: 'Casa',
-    area: 120,
-    precio: 189000,
-    precioTexto: 'S/ 189,000',
-    estado: 'Promoción',
-    // TODO: reemplazar por la imagen real del proyecto.
-    // Colocar el archivo en: public/images/promociones/proyecto-1.png
-    imagen: '/images/promociones/proyecto-1.png',
-  },
-  {
-    id: 'los-encinos',
-    nombre: 'Los Encinos',
-    ubicacion: 'Chilca, Huancayo',
-    ciudad: 'Chilca',
+// Todavía no hay promociones vigentes confirmadas por la empresa. Para no mostrar proyectos,
+// descuentos ni precios inventados, esta sección lista los proyectos REALES del sistema
+// (`getProyectos()`, los mismos de /proyectospage). Cuando existan promociones reales, llegarán
+// por la API con esta misma forma de tarjeta.
+function tarjetaDeProyecto(proyecto) {
+  return {
+    id: proyecto.id,
+    nombre: proyecto.nombre,
+    ubicacion: proyecto.ubicacion ?? 'Ubicación por confirmar',
+    ciudad: proyecto.ubicacion ? proyecto.ubicacion.split(',')[0].trim() : null,
+    // Los proyectos de Leones son de lotes.
     tipo: 'Lote',
-    area: 160,
-    precio: 95000,
-    precioTexto: 'S/ 95,000',
-    estado: 'Últimos lotes',
-    // TODO: reemplazar por la imagen real del proyecto.
-    // Colocar el archivo en: public/images/promociones/proyecto-2.png
-    imagen: '/images/promociones/proyecto-2.png',
-  },
-  {
-    id: 'torres-del-sur',
-    nombre: 'Torres del Sur',
-    ubicacion: 'El Tambo, Huancayo',
-    ciudad: 'El Tambo',
-    tipo: 'Departamento',
-    area: 75,
-    precio: 220000,
-    precioTexto: 'S/ 220,000',
-    estado: 'Descuento',
-    // TODO: reemplazar por la imagen real del proyecto.
-    // Colocar el archivo en: public/images/promociones/proyecto-3.png
-    imagen: '/images/promociones/proyecto-3.png',
-  },
+    area: proyecto.areaDesde,
+    precio: proyecto.precioDesde,
+    precioTexto: proyecto.precioDesde === null ? 'Precio por confirmar' : `Desde ${formatearPrecio(proyecto.precioDesde)}`,
+    // Insignia calculada con los lotes (no es una promoción).
+    estado: etiquetaDisponibilidad(proyecto),
+    imagen: proyecto.imagen,
+    enlace: `/lotes?id=${proyecto.id}`,
+  }
+}
+
+/** Opciones de un filtro a partir de los datos (sin valores vacíos ni repetidos). */
+const opcionesDe = (tarjetas, campo, opcionDefecto) => [
+  opcionDefecto,
+  ...new Set(tarjetas.map((tarjeta) => tarjeta[campo]).filter(Boolean)),
 ]
 
 function ImagenProyecto({ src, alt }) {
@@ -139,6 +107,27 @@ const filtrosPorDefecto = {
 }
 
 function Promociones() {
+  const [promociones, setPromociones] = useState([])
+  const [estadoCarga, setEstadoCarga] = useState('cargando') // 'cargando' | 'listo' | 'error'
+
+  useEffect(() => {
+    let cancelado = false
+    getProyectos()
+      .then((proyectos) => {
+        if (cancelado) return
+        setPromociones(proyectos.map(tarjetaDeProyecto))
+        setEstadoCarga('listo')
+      })
+      .catch(() => {
+        if (!cancelado) setEstadoCarga('error')
+      })
+    return () => {
+      cancelado = true
+    }
+  }, [])
+
+  const ubicacionesFiltro = useMemo(() => opcionesDe(promociones, 'ciudad', OPCION_UBICACION_DEFECTO), [promociones])
+  const tiposFiltro = useMemo(() => opcionesDe(promociones, 'tipo', OPCION_TIPO_DEFECTO), [promociones])
   const [busqueda, setBusqueda] = useState(filtrosPorDefecto.busqueda)
   const [ubicacion, setUbicacion] = useState(filtrosPorDefecto.ubicacion)
   const [tipo, setTipo] = useState(filtrosPorDefecto.tipo)
@@ -179,12 +168,14 @@ function Promociones() {
         filtrosAplicados.tipo === OPCION_TIPO_DEFECTO ||
         promo.tipo === filtrosAplicados.tipo
 
+      // Sin precio confirmado, el proyecto solo aparece con "Cualquier precio".
       const coincidePrecio =
-        promo.precio >= rango.min && promo.precio <= rango.max
+        rango === rangosPrecio[0] ||
+        (promo.precio !== null && promo.precio >= rango.min && promo.precio <= rango.max)
 
       return coincideTexto && coincideUbicacion && coincideTipo && coincidePrecio
     })
-  }, [filtrosAplicados])
+  }, [promociones, filtrosAplicados])
 
   return (
     <section className="promociones">
@@ -328,7 +319,7 @@ function Promociones() {
 
               <h2 className="promo-seccion-titulo">
                 Proyectos en{' '}
-                <span className="promo-texto-dorado">oferta</span>
+                <span className="promo-texto-dorado">venta</span>
               </h2>
 
               <span
@@ -337,8 +328,8 @@ function Promociones() {
               />
 
               <p className="promo-seccion-descripcion">
-                Conoce nuestras oportunidades inmobiliarias y encuentra el
-                lote ideal para ti.
+                Aún no hay promociones vigentes confirmadas. Mientras tanto,
+                conoce nuestros proyectos en venta y encuentra el lote ideal para ti.
               </p>
             </div>
 
@@ -366,7 +357,7 @@ function Promociones() {
 
                       <div className="promo-card-dato">
                         <LandPlot size={14} strokeWidth={2} />
-                        <span>{promo.area} m²</span>
+                        <span>{promo.area === null ? 'Área por confirmar' : `Desde ${promo.area} m²`}</span>
                       </div>
 
                       <div className="promo-card-pie">
@@ -376,9 +367,7 @@ function Promociones() {
 
                         <a
                           className="promo-card-boton"
-                          href="/proyectospage"
-                          // TODO: enlazar a la ruta o modal de detalle
-                          // específico del proyecto cuando esté disponible.
+                          href={promo.enlace}
                         >
                           Ver detalles
                           <ArrowUpRight size={15} strokeWidth={2.2} />
@@ -388,9 +377,19 @@ function Promociones() {
                   </article>
                 ))}
 
-                {promocionesFiltradas.length === 0 && (
+                {estadoCarga === 'cargando' && (
+                  <p className="promo-sin-resultados">Cargando proyectos…</p>
+                )}
+
+                {estadoCarga === 'error' && (
                   <p className="promo-sin-resultados">
-                    No encontramos promociones con los filtros
+                    No pudimos cargar los proyectos. Intenta nuevamente.
+                  </p>
+                )}
+
+                {estadoCarga === 'listo' && promocionesFiltradas.length === 0 && (
+                  <p className="promo-sin-resultados">
+                    No encontramos proyectos con los filtros
                     seleccionados. Intenta con otra búsqueda.
                   </p>
                 )}

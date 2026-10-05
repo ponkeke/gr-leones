@@ -7,10 +7,10 @@
 //   - estado (estado comercial del proyecto) y precios
 // Los campos calculados (totalLotes, lotesDisponibles, areaDesde, precioDesde...) NO se
 // escriben aquí: los agrega `services/api.js` a partir de los lotes.
-import portadaGenerica from '../assets/images/terreno1.png'
-import planoChalayII from '../assets/proyectos/chalay-ii/plano-lotes.jpg'
-import planoSanAgustinI from '../assets/proyectos/san-agustin-i/plano-lotes.jpg'
-import planoSanAgustinII from '../assets/proyectos/san-agustin-ii/plano-lotes.jpg'
+import portadaGenerica from '../assets/images/terreno1.webp'
+import planoChalayII from '../assets/proyectos/chalay-ii/plano-lotes.webp'
+import planoSanAgustinI from '../assets/proyectos/san-agustin-i/plano-lotes.webp'
+import planoSanAgustinII from '../assets/proyectos/san-agustin-ii/plano-lotes.webp'
 
 export const proyectos = [
   {

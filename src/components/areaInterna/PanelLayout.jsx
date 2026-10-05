@@ -1,16 +1,28 @@
 import { useEffect, useState } from 'react'
-import { ExternalLink, LogOut, Menu, X } from 'lucide-react'
+import { Bell, ExternalLink, LogOut, Menu, X } from 'lucide-react'
 import { useAreaInterna } from './contexto'
 import { Enlace } from './Partes'
 import { iniciales } from './formatoPanel'
 import './Panel.css'
+
+/** Pequeño contador dorado de notificaciones sin leer ("9+" desde 10). Nada si no hay. */
+function Contador({ cantidad }) {
+  if (!cantidad) return null
+  return (
+    <span className="panel-contador">
+      {cantidad > 9 ? '9+' : cantidad}
+      <span className="panel-oculto"> sin leer</span>
+    </span>
+  )
+}
 
 /**
  * Marco del área interna: sidebar con el menú del tipo de usuario + barra superior con su nombre.
  * En pantallas angostas (≤ 960px) el sidebar se abre como panel lateral con el botón ☰.
  */
 function PanelLayout({ menu, etiquetaArea, subtituloUsuario, children }) {
-  const { usuario, ruta, salir } = useAreaInterna()
+  const { usuario, ruta, salir, noLeidas } = useAreaInterna()
+  const rutaNotificaciones = menu.find((item) => item.notificaciones)?.a
   const [menuAbierto, setMenuAbierto] = useState(false)
   const cerrarMenu = () => setMenuAbierto(false)
 
@@ -38,7 +50,7 @@ function PanelLayout({ menu, etiquetaArea, subtituloUsuario, children }) {
         <p className="panel-sidebar-area">{etiquetaArea}</p>
 
         <nav className="panel-nav">
-          {menu.map(({ a, etiqueta, icono: Icono }) => (
+          {menu.map(({ a, etiqueta, icono: Icono, notificaciones }) => (
             <Enlace
               key={a}
               a={a}
@@ -48,6 +60,7 @@ function PanelLayout({ menu, etiquetaArea, subtituloUsuario, children }) {
             >
               <Icono size={18} aria-hidden="true" />
               <span>{etiqueta}</span>
+              {notificaciones && <Contador cantidad={noLeidas} />}
             </Enlace>
           ))}
         </nav>
@@ -78,6 +91,18 @@ function PanelLayout({ menu, etiquetaArea, subtituloUsuario, children }) {
           >
             <Menu size={20} />
           </button>
+
+          {rutaNotificaciones && (
+            <Enlace
+              a={rutaNotificaciones}
+              className={`panel-topbar-notificaciones ${ruta === rutaNotificaciones ? 'activo' : ''}`}
+              aria-label={noLeidas ? `Notificaciones: ${noLeidas} sin leer` : 'Notificaciones'}
+              title="Notificaciones"
+            >
+              <Bell size={18} aria-hidden="true" />
+              <Contador cantidad={noLeidas} />
+            </Enlace>
+          )}
 
           <div className="panel-usuario">
             <span className="panel-avatar" aria-hidden="true">{iniciales(usuario.nombre)}</span>

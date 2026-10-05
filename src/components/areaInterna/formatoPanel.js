@@ -21,12 +21,12 @@ export function textoLote(registro) {
   return registro?.lote ? formatearLote(registro.lote) : registro?.loteCodigo ?? '—'
 }
 
+/** Lote con su relación si está separado: "MZ A - 03 (separado)". */
+export function textoLoteConRelacion(registro) {
+  return `${textoLote(registro)}${registro?.relacion === 'SEPARADO' ? ' (separado)' : ''}`
+}
+
 /** Nombre del proyecto del registro, con la capitalización de la tarjeta pública. */
 export function textoProyecto(registro) {
   return registro?.proyecto?.nombre ?? '—'
-}
-
-/** Enlaces de ejemplo del equipo (wa.me/51XXXX…, instagram.com/...) se tratan como pendientes. */
-export function esEnlacePendiente(url) {
-  return !url || /X{3,}|\.\.\.|dominio\.com/i.test(url)
 }

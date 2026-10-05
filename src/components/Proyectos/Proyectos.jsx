@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import './Proyectos.css'
 
 
-import tituloProyectos from '../../assets/images/E-terreno.png'
-import leon from '../../assets/images/chat.png'
+import tituloProyectos from '../../assets/images/E-terreno.webp'
+import leon from '../../assets/images/chat.webp'
 import { getProyectos } from '../../services/api'
 import { formatearPrecio } from '../../utils/formato'
 
@@ -59,7 +59,8 @@ function Proyectos() {
               <a
                 key={item.id}
                 className="proyecto-destacado-item"
-                href={`/detalle-proyecto?id=${item.id}`}
+                // Misma ruta que "Ver proyecto" en /proyectospage (no existe una página de detalle aparte).
+                href={`/lotes?id=${item.id}`}
               >
                 <span className="proyecto-destacado-nombre">{item.nombre}</span>
                 <span className="proyecto-destacado-ubicacion">

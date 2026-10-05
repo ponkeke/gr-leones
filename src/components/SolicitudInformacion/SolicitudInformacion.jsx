@@ -11,6 +11,7 @@ import {
   Confirmacion,
 } from '../Solicitud/PartesSolicitud'
 import { useAsesores } from '../Solicitud/useAsesores'
+import { useContactoDeSesion } from '../Solicitud/useContactoDeSesion'
 import {
   validarNombre,
   validarCelular,
@@ -51,9 +52,10 @@ function FormularioInformacion({ onClose, onVolver = onClose, textoVolver, proye
   const [estado, setEstado] = useState('editando') // 'editando' | 'enviando' | 'exito'
   const [errorEnvio, setErrorEnvio] = useState(null)
   const formularioRef = useRef(null)
+  const camposBase = useContactoDeSesion(CAMPOS_INICIALES, setDatos)
 
   const asesor = asesores.find((a) => a.id === asesorId)
-  const hayCambios = asesorId !== null || Object.keys(CAMPOS_INICIALES).some((c) => datos[c] !== CAMPOS_INICIALES[c])
+  const hayCambios = asesorId !== null || Object.keys(camposBase).some((c) => datos[c] !== camposBase[c])
 
   const cambiar = (campo, valor) => {
     setDatos((prev) => ({ ...prev, [campo]: valor }))

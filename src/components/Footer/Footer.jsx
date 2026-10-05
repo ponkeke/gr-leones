@@ -1,6 +1,7 @@
 import './Footer.css'
 
-import peru from '../../assets/images/peru.png'
+import peru from '../../assets/images/peru.webp'
+import RedesSociales from '../RedesSociales/RedesSociales'
 
 // Datos de contacto. `confirmado: false` los muestra como texto; al pasar a `true` se
 // vuelven enlaces (tel: / mailto:) generados con el mismo valor. Ponlos en `true` solo
@@ -10,6 +11,8 @@ const CONTACTO = {
   telefono: { texto: '+51 925 281 766', confirmado: false },
   correo: { texto: 'contacto@leones.com', confirmado: false },
 }
+
+// Redes sociales: su configuración vive en `data/redesSociales.js` (componente RedesSociales).
 
 // PENDIENTE: ruta o URL de la página de "Términos y condiciones" (aún no existe).
 // Con un valor, el texto del pie se convierte en enlace.
@@ -81,6 +84,26 @@ function Footer() {
             Promociones
           </a>
 
+          <a href="/inversionistas">
+            Inversionistas
+          </a>
+
+          <a href="/testimonios">
+            Testimonios
+          </a>
+
+          <a href="/reconocimientos">
+            Reconocimientos
+          </a>
+
+          <a href="/galeria">
+            Galería
+          </a>
+
+          <a href="/preguntas-frecuentes">
+            Preguntas frecuentes
+          </a>
+
           <a href="#contacto">
             Contacto
           </a>
@@ -111,6 +134,10 @@ function Footer() {
             ) : (
               CONTACTO.correo.texto
             )}
+          </p>
+
+          <p>
+            <RedesSociales variante="pie" />
           </p>
 
         </div>

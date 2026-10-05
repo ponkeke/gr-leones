@@ -11,6 +11,11 @@ import Login from './pages/login/Login'
 import SimuladorCostos from './pages/simuladorCostos/SimuladorCostos'
 import NoEncontrada from './pages/noEncontrada/NoEncontrada'
 import AreaInterna from './pages/areaInterna/AreaInterna'
+import Testimonios from './pages/testimonios/Testimonios'
+import Inversionistas from './pages/inversionistas/Inversionistas'
+import PreguntasFrecuentes from './pages/preguntasFrecuentes/PreguntasFrecuentes'
+import Reconocimientos from './pages/reconocimientos/Reconocimientos'
+import Galeria from './pages/galeria/Galeria'
 import { esRutaInterna, normalizarRuta } from './utils/rutas'
 
 // Rutas conocidas: cada una con la clase que aísla los estilos de su página.
@@ -25,6 +30,12 @@ const RUTAS = {
   '/promociones': { clase: 'pagina-promociones', Pagina: Promociones },
   '/login': { clase: 'pagina-login', Pagina: Login },
   '/simulador-costos': { clase: 'pagina-simulador', Pagina: SimuladorCostos },
+  // Contenido público (FAQ, testimonios/clientes satisfechos/historias/redes, inversionistas, logros).
+  '/testimonios': { clase: 'pagina-testimonios', Pagina: Testimonios },
+  '/inversionistas': { clase: 'pagina-inversionistas', Pagina: Inversionistas },
+  '/preguntas-frecuentes': { clase: 'pagina-preguntas-frecuentes', Pagina: PreguntasFrecuentes },
+  '/reconocimientos': { clase: 'pagina-reconocimientos', Pagina: Reconocimientos },
+  '/galeria': { clase: 'pagina-galeria', Pagina: Galeria },
 }
 
 function App() {
@@ -46,7 +57,7 @@ function App() {
     }
   }, [])
 
-  // /cliente/* y /asesor/*: área interna con su propio layout (sidebar + topbar), sin Navbar ni Footer.
+  // /cliente/*, /asesor/* y /admin/*: área interna con su propio layout (sidebar + topbar), sin Navbar ni Footer.
   if (esRutaInterna(ruta)) return <AreaInterna />
 
   return (
@@ -56,7 +67,7 @@ function App() {
       <main>
         <Pagina />
       </main>
-
+      
       <Footer />
 
      

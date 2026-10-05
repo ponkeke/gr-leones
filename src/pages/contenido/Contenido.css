@@ -1,0 +1,460 @@
+/* =========================================
+   PÁGINAS DE CONTENIDO (Testimonios, Inversionistas, Preguntas frecuentes, Reconocimientos)
+   Misma línea del sitio: fondo negro con la imagen del body, dorado #f5c400, Anton para títulos,
+   Montserrat para etiquetas y Raleway para textos. Prefijo `contenido-` para no chocar con otras.
+========================================= */
+
+.contenido {
+  min-height: 100vh;
+  padding: 140px 0 90px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.82) 35%, rgba(0, 0, 0, 0.94) 100%);
+  color: #edeee4;
+  font-family: 'Raleway', sans-serif;
+}
+
+.contenido-contenedor {
+  width: min(100% - 48px, 1140px);
+  margin: 0 auto;
+}
+
+/* ---------- Encabezado ---------- */
+
+.contenido-encabezado {
+  max-width: 760px;
+}
+
+.contenido-eyebrow {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #f5c400;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+.contenido-titulo {
+  color: #ffffff;
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.contenido-titulo span {
+  color: #f5c400;
+}
+
+.contenido-linea {
+  display: block;
+  width: 72px;
+  height: 3px;
+  margin: 18px 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f5c400, rgba(245, 196, 0, 0));
+}
+
+.contenido-lead {
+  color: #cfcfc6;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ---------- Secciones ---------- */
+
+.contenido-seccion {
+  margin-top: 64px;
+}
+
+.contenido-seccion-titulo {
+  margin-bottom: 6px;
+  color: #ffffff;
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(24px, 2.4vw, 30px);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.contenido-seccion-descripcion {
+  margin-bottom: 22px;
+  color: #a8a8a8;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.contenido-rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.contenido-tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px;
+  border: 1px solid rgba(255, 222, 8, 0.16);
+  border-radius: 16px;
+  background: rgba(31, 31, 30, 0.85);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.22);
+}
+
+.contenido-tarjeta h3 {
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.contenido-tarjeta p {
+  color: #cfcfc6;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.contenido-meta {
+  color: #8a8a8a;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.contenido-dato {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 13.5px;
+}
+
+.contenido-dato:last-child {
+  border-bottom: none;
+}
+
+.contenido-dato span {
+  color: #a8a8a8;
+}
+
+.contenido-dato strong {
+  color: #edeee4;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  text-align: right;
+}
+
+.contenido-imagen {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #171717;
+}
+
+.contenido-categoria {
+  display: inline-block;
+  margin-right: 10px;
+  padding: 2px 8px;
+  border: 1px solid rgba(245, 196, 0, 0.45);
+  border-radius: 999px;
+  color: #f5c400;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+/* Filtros tipo "pastilla" (galería por proyecto). */
+.contenido-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.contenido-filtros button {
+  padding: 9px 16px;
+  border: 1px solid #414141;
+  border-radius: 999px;
+  background: #171717;
+  color: #cfcfc6;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.contenido-filtros button:hover {
+  border-color: rgba(245, 196, 0, 0.6);
+}
+
+.contenido-filtros button[aria-pressed='true'] {
+  border-color: #f5c400;
+  background: #f5c400;
+  color: #111;
+}
+
+.contenido-multimedia figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ---------- Estado vacío y avisos ---------- */
+
+.contenido-vacio {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 22px;
+  border: 1px dashed rgba(245, 196, 0, 0.4);
+  border-radius: 16px;
+  background: rgba(245, 196, 0, 0.04);
+  color: #cfcfc6;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.contenido-vacio svg {
+  flex: none;
+  color: #f5c400;
+}
+
+.contenido-vacio strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #edeee4;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+}
+
+.contenido-cargando {
+  color: #a8a8a8;
+  font-size: 14px;
+}
+
+.contenido-aviso {
+  margin-top: 28px;
+  padding: 14px 16px;
+  border-left: 3px solid #f5c400;
+  border-radius: 0 10px 10px 0;
+  background: rgba(245, 196, 0, 0.06);
+  color: #cfcfc6;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.contenido-ejemplo {
+  align-self: flex-start;
+  padding: 3px 9px;
+  border: 1px solid rgba(245, 196, 0, 0.5);
+  border-radius: 999px;
+  color: #f5c400;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ---------- Llamado a la acción ---------- */
+
+.contenido-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 32px;
+  padding: 20px 22px;
+  border: 1px solid rgba(245, 196, 0, 0.35);
+  border-radius: 16px;
+  background: rgba(245, 196, 0, 0.06);
+}
+
+.contenido-cta p {
+  color: #edeee4;
+  font-size: 14.5px;
+  font-weight: 600;
+}
+
+.contenido-cta .btn-buscar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+/* ---------- Clientes satisfechos ---------- */
+
+.contenido-satisfaccion {
+  display: grid;
+  grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.contenido-promedio {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.contenido-promedio-valor {
+  color: #f5c400;
+  font-family: 'Anton', sans-serif;
+  font-size: 58px;
+  line-height: 1;
+}
+
+.contenido-barra {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr) 36px;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+}
+
+.contenido-barra-fondo {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #2a2a2a;
+}
+
+.contenido-barra-relleno {
+  height: 100%;
+  border-radius: 999px;
+  background: #f5c400;
+}
+
+.contenido-barra span:last-child {
+  color: #a8a8a8;
+  text-align: right;
+}
+
+/* ---------- Testimonio ---------- */
+
+.contenido-cita {
+  position: relative;
+  padding-top: 6px;
+  font-style: italic;
+}
+
+.contenido-autor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  color: #edeee4;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ---------- Preguntas frecuentes (acordeón) ---------- */
+
+.contenido-buscador {
+  width: min(100%, 440px);
+  margin: 28px 0 8px;
+  padding: 12px 14px;
+  border: 1px solid #414141;
+  border-radius: 10px;
+  background: #171717;
+  color: #f1efe7;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  outline: none;
+}
+
+.contenido-buscador:focus {
+  border-color: #f5c400;
+}
+
+.contenido-faq {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.contenido-faq details {
+  border: 1px solid rgba(255, 222, 8, 0.16);
+  border-radius: 14px;
+  background: rgba(31, 31, 30, 0.85);
+}
+
+.contenido-faq details[open] {
+  border-color: rgba(245, 196, 0, 0.5);
+}
+
+.contenido-faq summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 20px;
+  color: #edeee4;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  list-style: none;
+}
+
+.contenido-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.contenido-faq summary::after {
+  flex: none;
+  color: #f5c400;
+  content: '+';
+  font-size: 20px;
+  line-height: 1;
+}
+
+.contenido-faq details[open] summary::after {
+  content: '–';
+}
+
+.contenido-faq summary:focus-visible {
+  border-radius: 14px;
+  outline: 2px solid #f5c400;
+  outline-offset: 2px;
+}
+
+.contenido-faq details p {
+  padding: 0 20px 18px;
+  color: #cfcfc6;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 760px) {
+  .contenido {
+    padding-top: 120px;
+  }
+
+  .contenido-contenedor {
+    width: min(100% - 32px, 1140px);
+  }
+
+  .contenido-satisfaccion {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .contenido-seccion {
+    margin-top: 48px;
+  }
+}

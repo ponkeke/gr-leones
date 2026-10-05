@@ -3,6 +3,7 @@ import Modal from '../Modal/Modal'
 import SelectorAsesor from '../SelectorAsesor/SelectorAsesor'
 import { Seccion, Campo, NotaObligatorios, ListaDatos, BotonEnviar, Confirmacion } from '../Solicitud/PartesSolicitud'
 import { useAsesores } from '../Solicitud/useAsesores'
+import { useContactoDeSesion } from '../Solicitud/useContactoDeSesion'
 import {
   TIPOS_DOCUMENTO,
   validarDocumento,
@@ -45,9 +46,14 @@ function FormularioCotizacion({ onClose, onVolver = onClose, textoVolver, proyec
   const [estado, setEstado] = useState('editando') // 'editando' | 'enviando' | 'exito'
   const [errorEnvio, setErrorEnvio] = useState(null)
   const formularioRef = useRef(null)
+  // Con sesión de cliente también se conoce su DNI.
+  const camposBase = useContactoDeSesion(CAMPOS_INICIALES, setDatos, (cliente) => ({
+    tipoDocumento: 'DNI',
+    numeroDocumento: cliente.dni ?? '',
+  }))
 
   const asesor = asesores.find((a) => a.id === asesorId)
-  const hayCambios = asesorId !== null || Object.keys(CAMPOS_INICIALES).some((c) => datos[c] !== CAMPOS_INICIALES[c])
+  const hayCambios = asesorId !== null || Object.keys(camposBase).some((c) => datos[c] !== camposBase[c])
   const esEmpresa = datos.tipoDocumento === 'RUC'
   const tienePrecio = lote?.precio_total !== null && lote?.precio_total !== undefined
 

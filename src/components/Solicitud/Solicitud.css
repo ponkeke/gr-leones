@@ -196,7 +196,7 @@
   border-radius: 8px;
 }
 
-.solicitud-opcion:hover {
+.solicitud-opcion:hover:not(:disabled) {
   border-color: rgba(245, 196, 0, 0.6);
 }
 
@@ -209,6 +209,127 @@
   border-color: #f5c400;
   background: #f5c400;
   color: #111;
+}
+
+/* Horario ocupado: se ve, pero no se puede elegir. */
+.solicitud-opcion:disabled {
+  border-style: dashed;
+  background: repeating-linear-gradient(135deg, #151515 0 6px, #1b1b1b 6px 12px);
+  color: #6f6f6f;
+  cursor: not-allowed;
+}
+
+.solicitud-opcion:disabled s {
+  text-decoration-thickness: 1px;
+}
+
+/* Horarios libres: borde dorado suave para que se distingan de los ocupados. */
+.solicitud-horas .solicitud-opcion:not(:disabled):not([aria-checked='true']) {
+  border-color: rgba(245, 196, 0, 0.45);
+  color: #f1efe7;
+}
+
+.solicitud-resumen-horarios {
+  margin-bottom: 10px;
+  color: #cfcfc6;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.solicitud-leyenda-horas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 10px;
+  color: #a8a8a8;
+  font-family: 'Raleway', sans-serif;
+  font-size: 11.5px;
+}
+
+.solicitud-leyenda-horas span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.solicitud-muestra-hora {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(245, 196, 0, 0.45);
+  border-radius: 4px;
+  background: #171717;
+}
+
+.solicitud-muestra-ocupada {
+  border: 1px dashed #414141;
+  background: repeating-linear-gradient(135deg, #151515 0 3px, #262626 3px 6px);
+}
+
+.solicitud-muestra-elegida {
+  border-color: #f5c400;
+  background: #f5c400;
+}
+
+.solicitud-opcion small {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* ---------- Sin disponibilidad: mensaje + salidas (otra fecha / otro asesor) ---------- */
+
+.solicitud-sin-horarios {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid rgba(245, 196, 0, 0.35);
+  border-radius: 10px;
+  background: rgba(245, 196, 0, 0.05);
+}
+
+.solicitud-sin-horarios p {
+  color: #edeee4;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.solicitud-sin-horarios-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.solicitud-boton-secundario {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(245, 196, 0, 0.55);
+  border-radius: 8px;
+  background: transparent;
+  color: #f5c400;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.solicitud-boton-secundario:hover:not(:disabled) {
+  background: rgba(245, 196, 0, 0.1);
+}
+
+.solicitud-boton-secundario:focus-visible {
+  outline: 2px solid #f5c400;
+  outline-offset: 2px;
+}
+
+.solicitud-boton-secundario:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 /* ---------- Listas de datos (lote, resumen, confirmación) ---------- */
@@ -359,6 +480,18 @@
 
 .solicitud-confirmacion .solicitud-boton {
   margin-top: 6px;
+}
+
+/* Paso "Confirma tu visita": resumen + confirmar / volver a editar. */
+.solicitud-revision {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.solicitud-revision .solicitud-boton-secundario {
+  width: 100%;
+  min-height: 44px;
 }
 
 /* =========================================

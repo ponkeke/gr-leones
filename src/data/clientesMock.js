@@ -4,6 +4,12 @@
 //
 // Cuando exista PostgreSQL, este archivo se reemplaza por la tabla `clientes` y la contraseña deja
 // de estar en el frontend.
+//
+// ACTIVACIÓN: estos clientes de demostración ya tienen contraseña y NO llevan el campo `activado`,
+// así que se consideran activos. Solo los clientes que da de alta administración (guardados en
+// localStorage, ver `getClientes()`) nacen con `activado: false` hasta que activan su cuenta.
+import { CLAVES, leerJSON } from '../utils/almacenamiento'
+
 export const clientesMock = [
   {
     id: 1,
@@ -16,41 +22,23 @@ export const clientesMock = [
     email: 'maria@gmail.com',
     asesorId: 'asesora-ventas-1',
   },
-  {
-    id: 2,
-    codigo: 'CLI002',
-    nombre: 'Carlos Pérez',
-    usuario: 'cliente02',
-    password: '123456',
-    dni: '70000002',
-    telefono: '988888888',
-    email: 'carlos@gmail.com',
-    asesorId: 'asesora-ventas-1',
-  },
-  {
-    id: 3,
-    codigo: 'CLI003',
-    nombre: 'Rosa Huamán',
-    usuario: 'cliente03',
-    password: '123456',
-    dni: '70000003',
-    telefono: '977777777',
-    email: 'rosa@gmail.com',
-    asesorId: 'asesora-ventas-1',
-  },
-  {
-    id: 4,
-    codigo: 'CLI004',
-    nombre: 'Jorge Quispe',
-    usuario: 'cliente04',
-    password: '123456',
-    dni: '70000004',
-    telefono: '966666666',
-    email: 'jorge@gmail.com',
-    asesorId: 'asesora-ventas-2',
-  },
+  
 ]
 
+/**
+ * Todos los clientes: los de demostración + los dados de alta por administración en este navegador
+ * (`leones_clientes`, los escribe `services/api.js`). Es la lista que usan el login y la API.
+ */
+export function getClientes() {
+  const nuevos = leerJSON(CLAVES.clientes, [])
+  return Array.isArray(nuevos) ? [...clientesMock, ...nuevos] : clientesMock
+}
+
+/** Una cuenta está activa salvo que se haya creado pendiente de activación (`activado: false`). */
+export function cuentaActivada(cliente) {
+  return cliente?.activado !== false
+}
+
 export function getClienteMockById(id) {
-  return clientesMock.find((cliente) => String(cliente.id) === String(id)) ?? null
+  return getClientes().find((cliente) => String(cliente.id) === String(id)) ?? null
 }

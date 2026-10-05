@@ -1,7 +1,7 @@
 import { useAreaInterna } from '../../components/areaInterna/contexto'
 import { useDatos } from '../../components/areaInterna/useDatos'
 import { Dato, EncabezadoPagina, EstadoCarga } from '../../components/areaInterna/Partes'
-import { esEnlacePendiente } from '../../components/areaInterna/formatoPanel'
+import { esEnlacePendiente } from '../../utils/formato'
 import { getAsesor } from '../../services/api'
 
 // Reutiliza el perfil público del equipo (`data/equipo.js`, el mismo que muestra "Nosotros").

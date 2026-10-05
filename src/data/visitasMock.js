@@ -1,5 +1,7 @@
 // VISITAS AGENDADAS (datos de DEMOSTRACIÓN) para el área interna. No representan disponibilidad
 // real de los asesores: esa vendrá del backend. `estado` usa ESTADOS_VISITA de `./procesoComercial.js`.
+// Son solo los datos INICIALES: `services/api.js` los copia una vez al almacén mock (localStorage)
+// y desde ahí se agregan las visitas nuevas y los cambios de estado.
 export const visitasMock = [
   {
     id: 1,
@@ -9,37 +11,7 @@ export const visitasMock = [
     fecha: '2026-09-28',
     hora: '10:00',
     tipo: 'Visita al proyecto',
-    estado: 'PROGRAMADA',
-  },
-  {
-    id: 2,
-    clienteId: 2,
-    asesorId: 'asesora-ventas-1',
-    loteCodigo: 'CHALAY-II-MZB-04',
-    fecha: '2026-09-20',
-    hora: '11:00',
-    tipo: 'Visita al proyecto',
-    estado: 'REALIZADA',
-  },
-  {
-    id: 3,
-    clienteId: 2,
-    asesorId: 'asesora-ventas-1',
-    loteCodigo: 'CHALAY-II-MZB-04',
-    fecha: '2026-09-30',
-    hora: '15:00',
-    tipo: 'Reunión en oficina',
-    estado: 'PROGRAMADA',
-  },
-  {
-    id: 4,
-    clienteId: 4,
-    asesorId: 'asesora-ventas-2',
-    loteCodigo: 'SAN-AGUSTIN-I-MZB-03',
-    fecha: '2026-10-02',
-    hora: '09:30',
-    tipo: 'Visita al proyecto',
-    estado: 'PROGRAMADA',
+    estado: 'CONFIRMADA',
   },
   {
     id: 5,

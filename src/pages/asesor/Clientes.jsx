@@ -3,7 +3,7 @@ import { Phone } from 'lucide-react'
 import { useAreaInterna } from '../../components/areaInterna/contexto'
 import { useDatos } from '../../components/areaInterna/useDatos'
 import { EncabezadoPagina, Enlace, EstadoCarga, Insignia, Tabla } from '../../components/areaInterna/Partes'
-import { textoLote, textoProyecto } from '../../components/areaInterna/formatoPanel'
+import { textoLoteConRelacion, textoProyecto } from '../../components/areaInterna/formatoPanel'
 import { getCarteraDeAsesor } from '../../services/api'
 import { ETAPAS_CLIENTE, buscarEstado } from '../../data/procesoComercial'
 import { formatearFecha } from '../../utils/formato'
@@ -20,7 +20,7 @@ const COLUMNAS = [
   },
   { titulo: 'Teléfono', render: (r) => r.cliente?.telefono ?? '—' },
   { titulo: 'Proyecto', render: (r) => textoProyecto(r.lotes[0]) },
-  { titulo: 'Lote de interés', render: (r) => (r.lotes.length ? r.lotes.map(textoLote).join(', ') : '—') },
+  { titulo: 'Lotes', render: (r) => (r.lotes.length ? r.lotes.map(textoLoteConRelacion).join(', ') : '—') },
   { titulo: 'Estado', render: (r) => <Insignia estado={buscarEstado(ETAPAS_CLIENTE, r.etapa)} /> },
   { titulo: 'Última interacción', render: (r) => formatearFecha(r.ultimaInteraccion) },
   {

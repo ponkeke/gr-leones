@@ -4,7 +4,7 @@ import { useAreaInterna } from '../../components/areaInterna/contexto'
 import { useDatos } from '../../components/areaInterna/useDatos'
 import { Dato, EncabezadoPagina, EstadoCarga, Insignia, InsigniaLote, Tabla } from '../../components/areaInterna/Partes'
 import { textoLote, textoProyecto } from '../../components/areaInterna/formatoPanel'
-import { getSolicitudesDeAsesor } from '../../services/api'
+import { actualizarSolicitud, getSolicitudesDeAsesor } from '../../services/api'
 import { ESTADOS_SOLICITUD, TIPOS_SOLICITUD, buscarEstado } from '../../data/procesoComercial'
 import { formatearFecha } from '../../utils/formato'
 
@@ -23,20 +23,45 @@ function Solicitudes() {
   return <ListaSolicitudes inicial={datos} />
 }
 
-// Los cambios de estado solo viven en esta pantalla (no hay backend todavía).
+// Los cambios de estado se guardan en el almacén mock (`services/api.js`) y avisan al cliente.
 function ListaSolicitudes({ inicial }) {
   const [solicitudes, setSolicitudes] = useState(inicial)
   const [filtro, setFiltro] = useState('')
   const [abiertaId, setAbiertaId] = useState(null)
+  const [guardando, setGuardando] = useState(false)
+  const [errorGuardado, setErrorGuardado] = useState(null)
 
   const abierta = solicitudes.find((s) => s.id === abiertaId) ?? null
   const filas = filtro ? solicitudes.filter((s) => s.estado === filtro) : solicitudes
 
-  const cambiarEstado = (id, nuevoEstado) =>
-    setSolicitudes((lista) => lista.map((s) => (s.id === id ? { ...s, estado: nuevoEstado } : s)))
+  const abrir = (id) => {
+    setErrorGuardado(null)
+    setAbiertaId(id)
+  }
+
+  const cambiarEstado = async (id, nuevoEstado) => {
+    setGuardando(true)
+    setErrorGuardado(null)
+    try {
+      const actualizada = await actualizarSolicitud(id, { estado: nuevoEstado })
+      setSolicitudes((lista) => lista.map((s) => (s.id === id ? actualizada : s)))
+    } catch (e) {
+      setErrorGuardado(e.message)
+    } finally {
+      setGuardando(false)
+    }
+  }
 
   const columnas = [
-    { titulo: 'Cliente', render: (s) => s.cliente?.nombre ?? '—' },
+    {
+      titulo: 'Cliente',
+      render: (s) => (
+        <span>
+          {s.cliente?.nombre ?? '—'}
+          {!s.clienteId && <span className="panel-texto-secundario">Visitante web</span>}
+        </span>
+      ),
+    },
     { titulo: 'Tipo de solicitud', render: (s) => TIPOS_SOLICITUD[s.tipo] },
     { titulo: 'Proyecto', render: textoProyecto },
     { titulo: 'Lote', render: textoLote },
@@ -45,7 +70,7 @@ function ListaSolicitudes({ inicial }) {
     {
       titulo: 'Acción',
       render: (s) => (
-        <button type="button" className="panel-boton-secundario" onClick={() => setAbiertaId(s.id)}>
+        <button type="button" className="panel-boton-secundario" onClick={() => abrir(s.id)}>
           Ver detalle
         </button>
       ),
@@ -75,15 +100,25 @@ function ListaSolicitudes({ inicial }) {
           titulo={TIPOS_SOLICITUD[abierta.tipo]}
           descripcion={`Solicitud #${abierta.id} · ${formatearFecha(abierta.fecha)}`}
           onCerrar={() => setAbiertaId(null)}
+          className="panel-modal"
         >
           <dl className="panel-datos">
             <Dato etiqueta="Cliente">{abierta.cliente?.nombre ?? '—'}</Dato>
+            <Dato etiqueta="Origen">{abierta.clienteId ? 'Cliente registrado' : 'Visitante del sitio web'}</Dato>
             <Dato etiqueta="Teléfono">{abierta.cliente?.telefono ?? '—'}</Dato>
+            {abierta.cliente?.correo && <Dato etiqueta="Correo">{abierta.cliente.correo}</Dato>}
             <Dato etiqueta="Proyecto">{textoProyecto(abierta)}</Dato>
             <Dato etiqueta="Lote">{textoLote(abierta)}</Dato>
             <Dato etiqueta="Estado del lote"><InsigniaLote estado={abierta.lote?.estado} /></Dato>
             <Dato etiqueta="Estado de la solicitud"><Insignia estado={buscarEstado(ESTADOS_SOLICITUD, abierta.estado)} /></Dato>
           </dl>
+
+          {abierta.motivo && (
+            <div className="panel-seccion">
+              <h3 className="panel-seccion-titulo">Tema de la consulta</h3>
+              <p className="panel-linea-detalle">{abierta.motivo}</p>
+            </div>
+          )}
 
           {abierta.mensaje && (
             <div className="panel-seccion">
@@ -101,13 +136,15 @@ function ListaSolicitudes({ inicial }) {
                   type="button"
                   className={e.value === abierta.estado ? 'btn-buscar panel-boton' : 'panel-boton-secundario'}
                   aria-pressed={e.value === abierta.estado}
+                  disabled={guardando}
                   onClick={() => cambiarEstado(abierta.id, e.value)}
                 >
                   {e.label}
                 </button>
               ))}
             </div>
-            <p className="panel-texto-secundario">El cambio es de demostración: no se guarda al salir de la página.</p>
+            {errorGuardado && <p className="panel-error" role="alert">{errorGuardado}</p>}
+            <p className="panel-texto-secundario">El cambio se guarda en este navegador (demostración) y se avisa al cliente.</p>
           </div>
         </Modal>
       )}

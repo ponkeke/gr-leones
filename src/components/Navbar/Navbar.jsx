@@ -94,11 +94,12 @@ function Navbar() {
           >
             Área cliente
           </button>
+          {/* No hay registro libre: la empresa da de alta al cliente y este activa su cuenta con su código. */}
           <button
             className="nav-cliente-movil"
-            onClick={() => { window.location.href = '/login' }}
+            onClick={() => { window.location.href = '/login?activar' }}
           >
-            Registrarse
+            Activar cuenta
           </button>
           
         </nav>
@@ -108,8 +109,8 @@ function Navbar() {
           Área cliente
         </button>
 
-         <button className="client-button" onClick={() => { window.location.href = '/login' }}>
-          Registrarse
+        <button className="client-button" onClick={() => { window.location.href = '/login?activar' }}>
+          Activar cuenta
         </button>
 
         {/* HAMBURGUESA */}

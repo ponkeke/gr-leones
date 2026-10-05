@@ -14,6 +14,13 @@
   font-family: 'Raleway', sans-serif;
 }
 
+/* Modales del área interna: se montan en <body> (portal), fuera de .panel-app, así que
+   heredan aquí la tipografía y el color del panel. */
+.panel-modal {
+  color: #edeee4;
+  font-family: 'Raleway', sans-serif;
+}
+
 /* ---------- Sidebar ---------- */
 
 .panel-sidebar {
@@ -102,6 +109,24 @@
   flex: none;
 }
 
+/* Contador de notificaciones sin leer (menú y barra superior). */
+.panel-contador {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  margin-left: auto;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #f5c400;
+  color: #111;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+}
+
 .panel-sidebar-pie {
   display: flex;
   flex-direction: column;
@@ -149,6 +174,31 @@
   background: none;
   color: #f5c400;
   cursor: pointer;
+}
+
+.panel-topbar-notificaciones {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(245, 196, 0, 0.35);
+  border-radius: 8px;
+  color: #f5c400;
+  transition: background 0.2s;
+}
+
+.panel-topbar-notificaciones:hover,
+.panel-topbar-notificaciones.activo {
+  background: rgba(245, 196, 0, 0.1);
+}
+
+.panel-topbar-notificaciones .panel-contador {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  margin: 0;
 }
 
 .panel-usuario {
@@ -878,6 +928,246 @@
   background: rgba(255, 255, 255, 0.18);
 }
 
+/* Mi disponibilidad (asesor): calendario + horas del día elegido */
+
+.panel-disponibilidad {
+  display: grid;
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.panel-disponibilidad .panel-texto-secundario {
+  margin-top: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.panel-horas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.panel-hora {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 42px;
+  padding: 6px 8px;
+  border: 1px solid #414141;
+  border-radius: 8px;
+  background: #171717;
+  color: #d6d6d6;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.panel-hora small {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.panel-hora:hover {
+  border-color: rgba(245, 196, 0, 0.6);
+}
+
+.panel-hora:focus-visible {
+  outline: 2px solid #f5c400;
+  outline-offset: 2px;
+}
+
+.panel-hora[aria-pressed='true'] {
+  border-color: #f5c400;
+  background: #f5c400;
+  color: #111;
+}
+
+/* Hora con una visita vigente: borde verde (los clientes ya no pueden tomarla). */
+.panel-hora.panel-hora-con-visita {
+  border-color: #6dc560;
+  box-shadow: inset 0 0 0 1px #6dc560;
+}
+
+.panel-hora.panel-hora-con-visita small {
+  color: #6dc560;
+}
+
+.panel-hora[aria-pressed='true'].panel-hora-con-visita small {
+  color: #1d5c14;
+}
+
+/* Visita en una hora que ya no está marcada como disponible. */
+.panel-hora.panel-hora-alerta {
+  border-color: #fb7b7b;
+  box-shadow: inset 0 0 0 1px #fb7b7b;
+}
+
+.panel-hora.panel-hora-alerta small {
+  color: #fb7b7b;
+}
+
+.panel-leyenda-horas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 14px;
+  color: #a8a8a8;
+  font-size: 11.5px;
+}
+
+.panel-leyenda-horas span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.panel-muestra-hora {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #414141;
+  border-radius: 4px;
+  background: #171717;
+}
+
+.panel-muestra-marcada {
+  border-color: #f5c400;
+  background: #f5c400;
+}
+
+.panel-muestra-visita {
+  border-color: #6dc560;
+  box-shadow: inset 0 0 0 1px #6dc560;
+}
+
+.panel-horario-semanal {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.panel-horario-semanal .panel-dato dd {
+  font-size: 13px;
+}
+
+.panel-excepcion {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-texto-alerta {
+  display: block;
+  margin-top: 2px;
+  color: #fb7b7b;
+  font-size: 12px;
+}
+
+/* ---------- Casilla (checkbox con su texto en una fila) ---------- */
+
+.panel-campo.panel-casilla {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.panel-campo.panel-casilla input {
+  width: 18px;
+  height: 18px;
+  accent-color: #f5c400;
+}
+
+/* ---------- Reportes: distribución con barras ---------- */
+
+.panel-distribucion {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+}
+
+.panel-distribucion-fila {
+  display: grid;
+  grid-template-columns: minmax(110px, 170px) minmax(0, 1fr) 64px;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.panel-distribucion-etiqueta {
+  color: #cfcfc6;
+}
+
+.panel-distribucion-barra {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #2a2a2a;
+}
+
+.panel-distribucion-barra span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: #f5c400;
+}
+
+.panel-distribucion-valor {
+  color: #edeee4;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  text-align: right;
+}
+
+.panel-distribucion-valor small {
+  display: block;
+  color: #8a8a8a;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+/* Embudo de conversión: una tarjeta por etapa. */
+.panel-embudo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+}
+
+.panel-embudo-etapa {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) 150px;
+  align-items: center;
+  gap: 16px;
+}
+
+.panel-embudo-etapa.no-disponible {
+  opacity: 0.7;
+  border-style: dashed;
+}
+
+.panel-embudo-cifras {
+  font-family: 'Montserrat', sans-serif;
+  text-align: right;
+}
+
+.panel-embudo-cifras strong {
+  display: block;
+  color: #f5c400;
+  font-size: 22px;
+}
+
+.panel-actividad-hora {
+  color: #8a8a8a;
+  font-size: 11.5px;
+}
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 960px) {
@@ -923,12 +1213,25 @@
     padding: 24px 20px 48px;
   }
 
-  .panel-rejilla-2 {
+  .panel-rejilla-2,
+  .panel-disponibilidad {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 
 @media (max-width: 760px) {
+  .panel-embudo-etapa {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .panel-embudo-cifras {
+    text-align: left;
+  }
+
+  .panel-distribucion-fila {
+    grid-template-columns: minmax(90px, 120px) minmax(0, 1fr) 56px;
+  }
+
   /* Tabla → una tarjeta por fila */
   .panel-tabla-contenedor {
     overflow: visible;

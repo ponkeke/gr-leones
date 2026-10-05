@@ -7,10 +7,10 @@
 // `codigo`, `usuario` y `password` son credenciales de DEMOSTRACIÓN para el login mock del área
 // interna (`utils/authMock.js`): no son cuentas reales ni ofrecen seguridad alguna. `getAsesores()`
 // las quita antes de entregar la lista a los formularios públicos.
-import asVen1 from '../assets/images/asVentas1.png'
-import asVen2 from '../assets/images/asVentas2.png'
-import asVen3 from '../assets/images/asVentas3.png'
-import asVen4 from '../assets/images/asVentas4.png'
+import asVen1 from '../assets/images/asVentas1.webp'
+import asVen2 from '../assets/images/asVentas2.webp'
+import asVen3 from '../assets/images/asVentas3.webp'
+import asVen4 from '../assets/images/asVentas4.webp'
 
 export const asesoresMock = [
   {

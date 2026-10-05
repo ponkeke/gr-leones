@@ -47,12 +47,28 @@ export function formatearHora(hhmm) {
 
 const DIAS_SEMANA = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 
+/** Date local de un "YYYY-MM-DD" (new Date(iso) lo leería en UTC y podría dar el día anterior). */
+function fechaDeISO(iso) {
+  const [anio, mes, dia] = iso.split('-').map(Number)
+  return new Date(anio, mes - 1, dia)
+}
+
+/** 2026-09-24 -> 4 (0 = domingo … 6 = sábado, como Date#getDay). */
+export function diaDeLaSemana(iso) {
+  return fechaDeISO(iso).getDay()
+}
+
+/** ("2026-09-28", 3) -> "2026-10-01". */
+export function sumarDias(iso, dias) {
+  const fecha = fechaDeISO(iso)
+  fecha.setDate(fecha.getDate() + dias)
+  return fechaLocalISO(fecha)
+}
+
 /** 2026-09-24 -> "Jueves 24/09/2026" (fecha local, sin desfase de zona horaria). */
 export function formatearFechaConDia(iso) {
   if (!iso) return ''
-  const [anio, mes, dia] = iso.split('-').map(Number)
-  const diaSemana = DIAS_SEMANA[new Date(anio, mes - 1, dia).getDay()]
-  return `${diaSemana} ${formatearFecha(iso)}`
+  return `${DIAS_SEMANA[diaDeLaSemana(iso)]} ${formatearFecha(iso)}`
 }
 
 /** Fecha local en formato YYYY-MM-DD (toISOString usaría UTC y de noche daría "mañana" en Perú). */
@@ -60,4 +76,12 @@ export function fechaLocalISO(fecha = new Date()) {
   const mes = String(fecha.getMonth() + 1).padStart(2, '0')
   const dia = String(fecha.getDate()).padStart(2, '0')
   return `${fecha.getFullYear()}-${mes}-${dia}`
+}
+
+/**
+ * Enlace que todavía no es real: vacío o con el formato de ejemplo (wa.me/51XXXX…,
+ * instagram.com/..., correo@dominio.com). Nunca se muestra como enlace clicable.
+ */
+export function esEnlacePendiente(url) {
+  return !url || /X{3,}|\.\.\.|dominio\.com/i.test(url)
 }
